@@ -8,14 +8,14 @@ public class PressKey : MonoBehaviour
     private static float RELEASE_TIME = 0.33f;
     private float release_tmp = 0;
     private bool release = false;
-    private AudioSource audio = GetComponent<AudioSource>();
+    private AudioSource audio;
 
     /// <summary>
     /// Initialise sounds of each keys
     /// </summary>
     void Start()
     {
-        
+        audio = GetComponent<AudioSource>();
     }
 
     /// <summary>
@@ -25,19 +25,13 @@ public class PressKey : MonoBehaviour
     void Update()
     {
         // Start sound: attack, sustain then decay while pressed
-        if (Input.GetKeyDown(KeyCode.Q))
-        {
-            Debug.Log("Play sound");
-            audio.Play(0);
-        }
+
 
         // Stop sound (either attack or decay) and start release
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            Debug.Log("Release");
-            release = true;
-        }
-        if (release) // release: sound disappear overtime
+
+
+        // release: sound disappear overtime
+        if (release) 
         {
             release_tmp += Time.deltaTime;
             audio.volume -= Time.deltaTime / RELEASE_TIME;
@@ -52,5 +46,19 @@ public class PressKey : MonoBehaviour
 
         // Change songs (tied with difficulty)
 
+    }
+
+    void OnMouseDown()
+    {
+        Debug.Log("Play sound");
+        transform.Rotate(Vector3.up * -2);
+        audio.Play(0);
+    }
+
+    void OnMouseUp()
+    {
+        Debug.Log("Release");
+		transform.Rotate(Vector3.up * 2);
+        release = true;
     }
 }
