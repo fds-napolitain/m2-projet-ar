@@ -61,4 +61,11 @@ public class PressKey : MonoBehaviour
 		transform.Rotate(Vector3.up * 2);
         release = true;
     }
+
+    void OnTriggerEnter(Collider camera)
+    {
+        Debug.Log("Play sound");
+        transform.Rotate(Vector3.up * -2);
+        audio.Play(0);
+    }
 }
