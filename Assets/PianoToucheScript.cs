@@ -25,6 +25,7 @@ public class PianoToucheScript : MonoBehaviour
 
     void Start()
     {
+        /*
         _intObj = GetComponent<InteractionBehaviour>();
         _intObj.OnContactBegin += () =>
         {
@@ -69,7 +70,19 @@ public class PianoToucheScript : MonoBehaviour
         if (renderer != null)
         {
             _material = renderer.material;
-        }
+        }*/
+        
+    }
+
+    void OnCollisionEnter(Collision Collision)
+    {
+        GetComponent<AudioSource>().Play();
+        Debug.Log(Collision.contacts);
+    }
+   
+    void OnCollisionExit()
+    {
+        
     }
 
     void Update()
