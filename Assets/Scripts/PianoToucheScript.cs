@@ -25,7 +25,7 @@ public class PianoToucheScript : MonoBehaviour
     private float release_tmp = 0;
     private bool release = false;
     private float playNote = -1f; // -1 = false, float:x = play at x
-    private AudioSource audio;
+    private AudioSource audioSource;
 
     // interactions
     private static Controller controller;
@@ -37,7 +37,7 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void Start()
     {
-        audio = GetComponent<AudioSource>(); // recupere l'audiosource dans une variable
+        audioSource = GetComponent<AudioSource>(); // recupere l'audiosource dans une variable
         if (!flag)
         {
             controller = new Controller();
@@ -93,13 +93,13 @@ public class PianoToucheScript : MonoBehaviour
         if (release) 
         {
             release_tmp += Time.deltaTime;
-            audio.volume -= Time.deltaTime / RELEASE_TIME;
+            audioSource.volume -= Time.deltaTime / RELEASE_TIME;
             if (release_tmp >= RELEASE_TIME)
             {
                 release_tmp = 0;
                 release = false;
-                audio.Stop();
-                audio.volume = 1f;
+                audioSource.Stop();
+                audioSource.volume = 1f;
             }
         }
     }
@@ -109,9 +109,9 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void PlayNote()
     {
-        if (playNote) // joue la note, rotate la touche
+        if (playNote <= Game.currentTime) // joue la note, rotate la touche
         {
-            audio.Play();
+            audioSource.Play();
             transform.Rotate(Vector3.up * -2);
         }
         else // lance la release, rotate la touche
