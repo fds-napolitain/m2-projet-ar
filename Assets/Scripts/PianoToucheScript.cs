@@ -15,26 +15,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
+/// <summary>
+/// Script liée à chaque touche
+/// </summary>
 public class PianoToucheScript : MonoBehaviour
 {
     // audio
-    private static float QUANTIZATION = 0.25f;
     private static float RELEASE_TIME = 0.33f;
-    private static int TEMPO = 60;
     private float release_tmp = 0;
     private bool release = false;
-    private bool playNote = false;
+    private float playNote = -1f; // -1 = false, float:x = play at x
     private AudioSource audio;
-    private float currentTime = 0;
 
     // interactions
     private static Controller controller;
     private static Frame frame;
     private static bool flag = false;
-    private Material _material;
-    private InteractionBehaviour _intObj;
-    private bool keySuspended = true;
-    private float _fingertipRadius = 0.01f; // 1 cm
 
     /// <summary>
     /// Appelé au début du script.
@@ -71,7 +67,7 @@ public class PianoToucheScript : MonoBehaviour
         } 
         if (frame.Hands[a/5].Fingers[a%5].IsExtended) // joue le son
         {
-            playNote = true;
+            playNote = Game.currentTimeQuantized();
         }
     }
 
@@ -80,7 +76,7 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void OnTriggerExit()
     {
-        playNote = false;
+        playNote = -1f;
     }
 
     /// <summary>
@@ -88,9 +84,11 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // update du temps pour la quantization
-        currentTime += Time.deltaTime;
-        PlayNote();
+        // quantification de notes
+        if (playNote >= Game.currentTime)
+        {
+            PlayNote();
+        }
         // release de la touche jusqu'a fin de note (release_time)
         if (release) 
         {
