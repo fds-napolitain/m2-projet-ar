@@ -9,10 +9,10 @@ public class SmartCamera : MonoBehaviour
 {
     public GameObject left; // mains
     public GameObject right;
-    private const float leftX; // positions initiales
-    private const float rightX;
-    private const float cameraX;
-    private const float cameraY;
+    private float leftX; // positions initiales
+    private float rightX;
+    private float cameraX;
+    private float cameraY;
     private float currentTranslation; // translation actuel
     private float currentZoom; // zoom actuel
 
