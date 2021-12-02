@@ -35,18 +35,12 @@ public class SmartCamera : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // translation
         float translation = left.transform.position.x + right.transform.position.x;
-        if (currentTranslation != translation)
-        {
-            transform.position = new Vector3(translation - currentTranslation, transform.position.y, transform.position.z); // se déplace de la différence
-            currentTranslation = translation; // enregistre le décalage actuel
-        }
-        // zoom
         float zoom = Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x);
-        if (zoom != currentZoom)
+        if (currentTranslation != translation || zoom != currentZoom)
         {
-            transform.position = new Vector3(transform.position.x, zoom - currentZoom, transform.position.z); // zoom de la différence
+            transform.position = new Vector3(translation - currentTranslation, zoom - currentZoom, transform.position.z); // se déplace et zoom de la différence
+            currentTranslation = translation; // enregistre le décalage actuel
             currentZoom = zoom; //enregistre le zoom actuel
         }
     }
