@@ -17,12 +17,17 @@ using System;
 
 public class PianoToucheScript : MonoBehaviour
 {
+    // audio
     private static float QUANTIZATION = 0.25f;
     private static float RELEASE_TIME = 0.33f;
+    private static int TEMPO = 60;
     private float release_tmp = 0;
     private bool release = false;
+    private bool playNote = false;
     private AudioSource audio;
+    private float currentTime = 0;
 
+    // interactions
     private static Controller controller;
     private static Frame frame;
     private static bool flag = false;
@@ -31,6 +36,9 @@ public class PianoToucheScript : MonoBehaviour
     private bool keySuspended = true;
     private float _fingertipRadius = 0.01f; // 1 cm
 
+    /// <summary>
+    /// Appelé au début du script.
+    /// </summary>
     void Start()
     {
         audio = GetComponent<AudioSource>(); // recupere l'audiosource dans une variable
@@ -41,6 +49,10 @@ public class PianoToucheScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Quand on touche une note avec un doigt.
+    /// </summary>
+    /// <param name="collider"></param>
     void OnTriggerEnter(Collider collider)
     {
         frame = controller.Frame();
@@ -59,21 +71,28 @@ public class PianoToucheScript : MonoBehaviour
         } 
         if (frame.Hands[a/5].Fingers[a%5].IsExtended) // joue le son
         {
-            audio.Play();
-            transform.Rotate(Vector3.up * -2);
+            playNote = true;
         }
     }
 
+    /// <summary>
+    /// Quand on arrête de toucher une note avec le doigt.
+    /// </summary>
     void OnTriggerExit()
     {
-        release = true;
-        transform.Rotate(Vector3.up * 2);
+        playNote = false;
     }
 
+    /// <summary>
+    /// Chaque frame, joue les sons ou non.
+    /// </summary>
     void Update()
     {
+        // update du temps pour la quantization
+        currentTime += Time.deltaTime;
+        PlayNote();
         // release de la touche jusqu'a fin de note (release_time)
-        if (release)
+        if (release) 
         {
             release_tmp += Time.deltaTime;
             audio.volume -= Time.deltaTime / RELEASE_TIME;
@@ -87,4 +106,20 @@ public class PianoToucheScript : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Joue la note en fonction de la quantification.
+    /// </summary>
+    void PlayNote()
+    {
+        if (playNote) // joue la note, rotate la touche
+        {
+            audio.Play();
+            transform.Rotate(Vector3.up * -2);
+        }
+        else // lance la release, rotate la touche
+        {
+            release = true;
+            transform.Rotate(Vector3.up * 2);
+        }
+    }
 }
