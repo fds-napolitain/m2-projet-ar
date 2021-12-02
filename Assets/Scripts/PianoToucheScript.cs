@@ -39,56 +39,9 @@ public class PianoToucheScript : MonoBehaviour
             controller = new Controller();
             flag = true;
         }
-        /*
-        _intObj = GetComponent<InteractionBehaviour>();
-        _intObj.OnContactBegin += () =>
-        {
-
-            foreach (var contactingHand in _intObj.contactingControllers
-                                                 .Query()
-                                                 .Select(controller => controller.intHand)
-                                                 .Where(intHand => intHand != null)
-                                                 .Select(intHand => intHand.leapHand))
-            {
-                foreach (var finger in contactingHand.Fingers)
-                {
-                    var fingertipPosition = finger.TipPosition.ToVector3();
-
-                    // If the distance from the fingertip and the object is less
-                    // than the 'fingertip radius', the fingertip is touching the object.
-                    if (_intObj.GetHoverDistance(fingertipPosition) < _fingertipRadius)
-                    {
-                       // Debug.Log("Found collision for fingertip: " + finger..bones[0].Type);
-                    }
-                }
-            }
-            //Debug.Log("Play sound" + keySuspended.ToString());
-
-            if (keySuspended) transform.Rotate(Vector3.right * -2);
-            GetComponent<AudioSource>().Play();
-        };
-        _intObj.OnContactEnd += () =>
-        {
-            //Debug.Log("Stop" + keySuspended.ToString());
-            keySuspended = true;
-            transform.Rotate(Vector3.right * 2);
-        };
-
-
-
-        Renderer renderer = GetComponent<Renderer>();
-        if (renderer == null)
-        {
-            renderer = GetComponentInChildren<Renderer>();
-        }
-        if (renderer != null)
-        {
-            _material = renderer.material;
-        }*/
-
     }
 
-    void OnTriggerEnter(Collider collider )
+    void OnTriggerEnter(Collider collider)
     {
         frame = controller.Frame();
         int a = Convert.ToInt32(collider.name);
@@ -106,13 +59,15 @@ public class PianoToucheScript : MonoBehaviour
         } 
         if (frame.Hands[a/5].Fingers[a%5].IsExtended) // joue le son
         {
-           audio.Play();
+            audio.Play();
+            transform.Rotate(Vector3.up * -2);
         }
     }
 
     void OnTriggerExit()
     {
         release = true;
+        transform.Rotate(Vector3.up * 2);
     }
 
     void Update()
