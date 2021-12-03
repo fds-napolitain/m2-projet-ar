@@ -43,7 +43,7 @@ public class SmartCamera : MonoBehaviour
             float zoom = (Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x)) / 2f;
             if (currentTranslation != centerX || zoom != currentZoom)
             {
-                transform.position = new Vector3(centerX - currentTranslation, zoom - currentZoom, transform.position.z); // se déplace et zoom de la différence
+                transform.position += new Vector3(centerX - currentTranslation, zoom - currentZoom, transform.position.z); // se déplace et zoom de la différence
                 currentTranslation = centerX; // enregistre le décalage actuel
                 currentZoom = zoom; //enregistre le zoom actuel
             }
