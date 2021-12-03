@@ -11,6 +11,7 @@ public class Game : MonoBehaviour
     public static float QUANTIZATION = Quantization.SIXTEEN;
     public static int TEMPO = 60;
     public static float currentTime = 0f;
+    public static Scale.Note baseNote = Scale.Note.C;
 
     // interactions
     public static Controller controller;
