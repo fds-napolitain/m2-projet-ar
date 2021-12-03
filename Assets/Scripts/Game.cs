@@ -8,8 +8,8 @@ using Leap;
 public class Game : MonoBehaviour
 {
     // audio
-    public static float QUANTIZATION = Quantization.DOUBLE_SIXTEEN;
-    public static int TEMPO = 90;
+    public static float QUANTIZATION = Quantization.SIXTEEN;
+    public static int TEMPO = 76;
     public static float currentTime = 0f;
     public static Scale.Note baseNote = Scale.Note.C;
 
@@ -55,11 +55,11 @@ public class Game : MonoBehaviour
     {
         if (QUANTIZATION == Quantization.NONE)
         {
-            return currentTime;
+            return currentTime / (TEMPO/60);
         }
         else
         {
-            return Mathf.Round(currentTime / QUANTIZATION) * QUANTIZATION + QUANTIZATION / 2;
+            return (Mathf.Round(currentTime / QUANTIZATION) * QUANTIZATION + QUANTIZATION / 2) / (TEMPO / 60);
         }
     }
 }
