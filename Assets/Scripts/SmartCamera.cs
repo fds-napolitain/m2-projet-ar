@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Leap;
 
 /// <summary>
 /// Adapte la caméra aux mouvements des mains.

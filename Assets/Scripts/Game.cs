@@ -8,7 +8,7 @@ using Leap;
 public class Game : MonoBehaviour
 {
     // audio
-    public static float QUANTIZATION = Quantization.SIXTEEN;
+    public static float QUANTIZATION = Quantization.DOUBLE_SIXTEEN;
     public static int TEMPO = 90;
     public static float currentTime = 0f;
     public static Scale.Note baseNote = Scale.Note.C;

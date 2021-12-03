@@ -6,10 +6,6 @@
  * between Ultraleap and you, your company or other organization.             *
  ******************************************************************************/
 
-using Leap.Unity;
-using Leap.Unity.Query;
-using Leap;
-using Leap.Unity.Interaction;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
