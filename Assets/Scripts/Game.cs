@@ -48,6 +48,8 @@ public class Game : MonoBehaviour
     /// [1.0, 1.0, 1.5, 1.5, 2.0]
     /// >>> [round(x / q) * q + q/2 for x in times]
     /// [1.25, 1.25, 1.75, 1.75, 2.25]
+    /// >>> [(round(x / qt) * qt + qt/2) / (tempo/60) for x in times]
+    /// [0.9868, 0.9868, 1.3815, 1.3815, 1.7763]
     /// 
     /// </summary>
     /// <returns></returns>
