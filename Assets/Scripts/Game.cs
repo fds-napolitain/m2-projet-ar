@@ -24,6 +24,7 @@ public class Game : MonoBehaviour
     {
         //DontDestroyOnLoad(this.gameObject);
         controller = new Controller();
+        frame = controller.Frame();
     }
 
     /// <summary>

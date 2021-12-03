@@ -15,8 +15,6 @@ public class SmartCamera : MonoBehaviour
     private float rightX;
     private float cameraX;
     private float cameraY;
-    private float currentTranslation; // translation actuel
-    private float currentZoom; // zoom actuel
 
     /// <summary>
     /// Initialisation des positions des mains.
@@ -27,8 +25,6 @@ public class SmartCamera : MonoBehaviour
         rightX = right.transform.position.x;
         cameraX = transform.position.x;
         cameraY = transform.position.y;
-        currentTranslation = (left.transform.position.x + right.transform.position.x) / 2f; // variables
-        currentZoom = (Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x)) / 2f;
     }
 
     /// <summary>
@@ -40,12 +36,10 @@ public class SmartCamera : MonoBehaviour
         if (Game.frame.Hands.Count == 2)
         {
             float centerX = (left.transform.position.x + right.transform.position.x) / 2f;
-            float zoom = (Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x)) / 2f;
-            if (currentTranslation != centerX || zoom != currentZoom)
+            float zoom = Mathf.Sqrt(Mathf.Pow(left.transform.position.x, 2) - Mathf.Pow(right.transform.position.x, 2));
+            if (Mathf.Abs(transform.position.x - centerX) >= 0.001 || zoom > 2)
             {
-                transform.position += new Vector3(centerX - currentTranslation, zoom - currentZoom, transform.position.z); // se déplace et zoom de la différence
-                currentTranslation = centerX; // enregistre le décalage actuel
-                currentZoom = zoom; //enregistre le zoom actuel
+                transform.position = new Vector3(centerX, cameraY + (zoom-2)/30f, transform.position.z); // se déplace et zoom de la différence
             }
         }
     }
