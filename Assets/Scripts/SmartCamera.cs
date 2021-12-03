@@ -14,6 +14,7 @@ public class SmartCamera : MonoBehaviour
     private float rightX;
     private float cameraX;
     private float cameraY;
+    private float cameraYMax;
 
     /// <summary>
     /// Initialisation des positions des mains.
@@ -24,6 +25,7 @@ public class SmartCamera : MonoBehaviour
         rightX = right.transform.position.x;
         cameraX = transform.position.x;
         cameraY = transform.position.y;
+        cameraYMax = cameraY + 40f;
     }
 
     /// <summary>
@@ -38,7 +40,7 @@ public class SmartCamera : MonoBehaviour
             float zoom = Mathf.Sqrt(Mathf.Pow(left.transform.position.x, 2) - Mathf.Pow(right.transform.position.x, 2));
             if (Mathf.Abs(transform.position.x - centerX) >= 0.001 || zoom > 2)
             {
-                transform.position = new Vector3(centerX, cameraY + (zoom-2)/30f, transform.position.z); // se déplace et zoom de la différence
+                transform.position = new Vector3(centerX, cameraY + (zoom-2)/Screen.width*cameraYMax, transform.position.z); // se déplace et zoom de la différence
             }
         }
     }

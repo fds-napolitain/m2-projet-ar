@@ -9,6 +9,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MainMenu.unity
     guid: 8b5aa0cdaa13bae43b2c6432303daa98
   - enabled: 1
-    path: Assets/Scenes/Piano.unity
+    path: Assets/Scenes/PlayFree.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
