@@ -27,22 +27,12 @@ public class PianoToucheScript : MonoBehaviour
     private float playNote = -1f; // -1 = false, float:x = play at x
     private AudioSource audioSource;
 
-    // interactions
-    private static Controller controller;
-    private static Frame frame;
-    private static bool flag = false;
-
     /// <summary>
     /// Appelé au début du script.
     /// </summary>
     void Start()
     {
         audioSource = GetComponent<AudioSource>(); // recupere l'audiosource dans une variable
-        if (!flag)
-        {
-            controller = new Controller();
-            flag = true;
-        }
     }
 
     /// <summary>
@@ -51,10 +41,8 @@ public class PianoToucheScript : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter(Collider collider)
     {
-        frame = controller.Frame();
         int a = Convert.ToInt32(collider.name);
-        Debug.Log(frame.Hands.Count);
-        if (frame.Hands.Count >= 1 && !frame.Hands[0].IsLeft) // si la main "gauche" est celle de "droite"
+        if (Game.frame.Hands.Count >= 1 && !Game.frame.Hands[0].IsLeft) // si la main "gauche" est celle de "droite"
         {
             if (a > 4) // inversement
             {
@@ -65,9 +53,14 @@ public class PianoToucheScript : MonoBehaviour
                 a += 5;
             }
         } 
-        if (frame.Hands[a/5].Fingers[a%5].IsExtended) // joue le son
+        if (Game.frame.Hands[a/5].Fingers[a%5].IsExtended) // joue le son
         {
+            //Debug.Log("Note détectée: " + Game.currentTime);
             playNote = Game.currentTimeQuantized();
+            if (playNote == Game.currentTime)
+            {
+                PlayNote();
+            }
         }
     }
 
@@ -76,7 +69,9 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void OnTriggerExit()
     {
-        playNote = -1f;
+        //Debug.Log("Note release: " + Game.currentTime);
+        release = true;
+        //transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
     }
 
     /// <summary>
@@ -85,8 +80,9 @@ public class PianoToucheScript : MonoBehaviour
     void Update()
     {
         // quantification de notes
-        if (playNote >= Game.currentTime)
+        if (Game.currentTime >= playNote)
         {
+            //Debug.Log(playNote + " " + Game.currentTime);
             PlayNote();
         }
         // release de la touche jusqu'a fin de note (release_time)
@@ -96,6 +92,7 @@ public class PianoToucheScript : MonoBehaviour
             audioSource.volume -= Time.deltaTime / RELEASE_TIME;
             if (release_tmp >= RELEASE_TIME)
             {
+                //Debug.Log("Note stop: " + Game.currentTime);
                 release_tmp = 0;
                 release = false;
                 audioSource.Stop();
@@ -109,15 +106,12 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void PlayNote()
     {
-        if (playNote <= Game.currentTime) // joue la note, rotate la touche
+        if (playNote != -1f) // joue la note, rotate la touche
         {
+            //Debug.Log("Note début: " + Game.currentTime);
             audioSource.Play();
-            transform.Rotate(Vector3.up * -2);
-        }
-        else // lance la release, rotate la touche
-        {
-            release = true;
-            transform.Rotate(Vector3.up * 2);
+            //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
+            playNote = -1f;
         }
     }
 }

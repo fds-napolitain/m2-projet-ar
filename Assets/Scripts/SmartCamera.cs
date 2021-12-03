@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Leap;
 
 /// <summary>
 /// Adapte la caméra aux mouvements des mains.
 /// </summary>
 public class SmartCamera : MonoBehaviour
 {
+    // camera
     public GameObject left; // mains
     public GameObject right;
     private float leftX; // positions initiales
@@ -25,8 +27,8 @@ public class SmartCamera : MonoBehaviour
         rightX = right.transform.position.x;
         cameraX = transform.position.x;
         cameraY = transform.position.y;
-        currentTranslation = left.transform.position.x + right.transform.position.x; // variables
-        currentZoom = Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x);
+        currentTranslation = (left.transform.position.x + right.transform.position.x) / 2f; // variables
+        currentZoom = (Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x)) / 2f;
     }
 
     /// <summary>
@@ -35,13 +37,16 @@ public class SmartCamera : MonoBehaviour
     /// </summary>
     void Update()
     {
-        float translation = left.transform.position.x + right.transform.position.x;
-        float zoom = Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x);
-        if (currentTranslation != translation || zoom != currentZoom)
+        if (Game.frame.Hands.Count == 2)
         {
-            transform.position = new Vector3(translation - currentTranslation, zoom - currentZoom, transform.position.z); // se déplace et zoom de la différence
-            currentTranslation = translation; // enregistre le décalage actuel
-            currentZoom = zoom; //enregistre le zoom actuel
+            float centerX = (left.transform.position.x + right.transform.position.x) / 2f;
+            float zoom = (Mathf.Abs(left.transform.position.x) + Mathf.Abs(right.transform.position.x)) / 2f;
+            if (currentTranslation != centerX || zoom != currentZoom)
+            {
+                transform.position = new Vector3(centerX - currentTranslation, zoom - currentZoom, transform.position.z); // se déplace et zoom de la différence
+                currentTranslation = centerX; // enregistre le décalage actuel
+                currentZoom = zoom; //enregistre le zoom actuel
+            }
         }
     }
 }

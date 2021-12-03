@@ -11,4 +11,5 @@ public static class Quantization
 	public const float QUARTER_TRIPLET = 0.33f; // triolet de noires
 	public const float SIXTEEN = 0.25f; // double croche
 	public const float TRIPLET = 0.167f; // triolet
+	public const float NONE = 0f; // no quantization
 }
