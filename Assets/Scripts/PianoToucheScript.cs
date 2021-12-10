@@ -25,6 +25,7 @@ public class PianoToucheScript : MonoBehaviour
     private float release = Mathf.Infinity; // infinite = false, float:x = play at x
     private float playNote = -1f; // -1 = false, float:x = play at x
     private AudioSource audioSource;
+    public Note note;
 
     /// <summary>
     /// Appelé au début du script.
@@ -58,7 +59,7 @@ public class PianoToucheScript : MonoBehaviour
             playNote = Game.CurrentTimeQuantized;
             if (playNote == Game.CurrentTime)
             {
-                audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFing>().velocity)) / VELOCITY_MAX);
+                audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity)) / VELOCITY_MAX);
                 PlayNote();
             }
         }

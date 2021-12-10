@@ -15,33 +15,55 @@ public static class Quantization
 	public const float NONE = 0f; // no quantization
 }
 
+
+/// <summary>
+/// Note.
+/// </summary>
+public class Note
+{
+
+}
+
+/// <summary>
+/// Liste des notes.
+/// </summary>
+public enum NoteName
+{
+	C,
+	D,
+	E,
+	F,
+	G,
+	A,
+	B,
+}
+
+/// <summary>
+/// Note majeures (blanche) ou mineures (noires)
+/// </summary>
+public enum NoteType
+{
+	MAJOR,
+	MINOR,
+	ANY,
+}
+
 /// <summary>
 /// Gamme.
 /// </summary>
 public static class Scale
 {
-	/// <summary>
-    /// Liste des notes.
-    /// </summary>
-	public enum Note
-    {
-		C,
-		D,
-		E,
-		F,
-		G,
-		A,
-		B,
-    }
 
-	/// <summary>
-    /// Note majeures (blanche) ou mineures (noires)
-    /// </summary>
-	public enum NoteType
+	public enum None
     {
-		MAJOR,
-		MINOR,
-    }
+		NOTE1 = NoteType.ANY,
+		NOTE2 = NoteType.ANY,
+		NOTE3 = NoteType.ANY,
+		NOTE4 = NoteType.ANY,
+		NOTE5 = NoteType.ANY,
+		NOTE6 = NoteType.ANY,
+		NOTE7 = NoteType.ANY,
+	}
 
 	/// <summary>
     /// Gamme majeure.

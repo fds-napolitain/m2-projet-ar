@@ -13,7 +13,6 @@ public class Game : MonoBehaviour
     public static int TEMPO = 76;
     private static float currentTime = 0f; // temps absolu (tempo = 60)
     public static float CurrentTime { get => currentTime / (TEMPO / 60); } // temps relatif (tempo pris en compte)
-    public static Scale.Note baseNote = Scale.Note.C;
 
     // interactions
     public static Controller controller;

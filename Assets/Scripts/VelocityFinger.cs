@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// Met à jour la vélocité des doigts en fonction de leurs positions et d'un interval clé en secondes.
 /// </summary>
-public class VelocityFing : MonoBehaviour
+public class VelocityFinger : MonoBehaviour
 {
     private const float INTERVAL_VELOCITY = 0.05f;
     private Rigidbody m_rigidbody;
