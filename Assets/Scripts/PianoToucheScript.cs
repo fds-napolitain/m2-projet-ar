@@ -18,6 +18,7 @@ public class PianoToucheScript : MonoBehaviour
 {
     // audio
     private static float RELEASE_TIME = 0.33f;
+    private static float VELOCITY_MAX = 0.5f;
     private float release_tmp = 0;
     private float release = Mathf.Infinity; // infinite = false, float:x = play at x
     private float playNote = -1f; // -1 = false, float:x = play at x
@@ -53,8 +54,9 @@ public class PianoToucheScript : MonoBehaviour
         {
             //Debug.Log("Note détectée: " + Game.currentTime);
             playNote = Game.currentTimeQuantized();
-            if (playNote == Game.currentTime)
+            if (playNote == Game.CurrentTime)
             {
+                audioSource.volume = (1f * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFing>().velocity)) / VELOCITY_MAX;
                 PlayNote();
             }
         }
@@ -76,13 +78,13 @@ public class PianoToucheScript : MonoBehaviour
     void Update()
     {
         // quantification de notes
-        if (Game.currentTime >= playNote)
+        if (Game.CurrentTime >= playNote)
         {
             //Debug.Log(playNote + " " + Game.currentTime);
             PlayNote();
         }
         // release de la touche jusqu'a fin de note (release_time)
-        if (Game.currentTime >= release) 
+        if (Game.CurrentTime >= release) 
         {
             release_tmp += Time.deltaTime;
             audioSource.volume -= Time.deltaTime / RELEASE_TIME;
@@ -105,6 +107,7 @@ public class PianoToucheScript : MonoBehaviour
         if (playNote != -1f) // joue la note, rotate la touche
         {
             //Debug.Log("Note début: " + Game.currentTime);
+            Debug.Log(audioSource.volume);
             audioSource.Play();
             //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
             playNote = -1f;

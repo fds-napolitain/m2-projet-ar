@@ -8,14 +8,16 @@ using Leap;
 public class Game : MonoBehaviour
 {
     // audio
-    public static float QUANTIZATION = Quantization.SIXTEEN;
+    public static float QUANTIZATION = Quantization.NONE;
     public static int TEMPO = 76;
-    public static float currentTime = 0f;
+    private static float currentTime = 0f;
     public static Scale.Note baseNote = Scale.Note.C;
 
     // interactions
     public static Controller controller;
     public static Frame frame;
+
+    public static float CurrentTime { get => currentTime / (TEMPO / 60); set => currentTime = value; }
 
     /// <summary>
     /// Initialisations au début.
@@ -57,7 +59,7 @@ public class Game : MonoBehaviour
     {
         if (QUANTIZATION == Quantization.NONE)
         {
-            return currentTime / (TEMPO/60);
+            return CurrentTime;
         }
         else
         {
