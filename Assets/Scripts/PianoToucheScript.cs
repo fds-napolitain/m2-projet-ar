@@ -17,8 +17,10 @@ using System;
 public class PianoToucheScript : MonoBehaviour
 {
     // audio
-    private static float RELEASE_TIME = 0.33f;
-    private static float VELOCITY_MAX = 0.5f;
+    private const float RELEASE_TIME = 0.33f;
+    private const float VELOCITY_MAX = 0.5f;
+    private const float VOLUME_MIN = 0.25f;
+    private const float VOLUME_MAX = 1f;
     private float release_tmp = 0;
     private float release = Mathf.Infinity; // infinite = false, float:x = play at x
     private float playNote = -1f; // -1 = false, float:x = play at x
@@ -53,10 +55,10 @@ public class PianoToucheScript : MonoBehaviour
         if (Game.frame.Hands[a/5].Fingers[a%5].IsExtended) // joue le son
         {
             //Debug.Log("Note détectée: " + Game.currentTime);
-            playNote = Game.currentTimeQuantized();
+            playNote = Game.CurrentTimeQuantized;
             if (playNote == Game.CurrentTime)
             {
-                audioSource.volume = (1f * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFing>().velocity)) / VELOCITY_MAX;
+                audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFing>().velocity)) / VELOCITY_MAX);
                 PlayNote();
             }
         }
@@ -68,7 +70,7 @@ public class PianoToucheScript : MonoBehaviour
     void OnTriggerExit()
     {
         //Debug.Log("Note release: " + Game.currentTime);
-        float release = Game.currentTimeQuantized();
+        float release = Game.CurrentTimeQuantized;
         //transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
     }
 
