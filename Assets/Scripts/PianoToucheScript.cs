@@ -109,7 +109,6 @@ public class PianoToucheScript : MonoBehaviour
         if (playNote != -1f) // joue la note, rotate la touche
         {
             //Debug.Log("Note début: " + Game.currentTime);
-            Debug.Log(audioSource.volume);
             audioSource.Play();
             //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
             playNote = -1f;
