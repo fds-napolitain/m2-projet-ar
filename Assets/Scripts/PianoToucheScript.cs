@@ -23,7 +23,7 @@ public class PianoToucheScript : MonoBehaviour
     private const float VELOCITY_MAX = 0.5f;
     private const float VOLUME_MIN = 0.25f;
     private const float VOLUME_MAX = 1f;
-    private const int KEYS_NUMBER = 88;
+    public const int KEYS_NUMBER = 88;
     
     // release
     private float release_tmp = 0;
@@ -149,7 +149,7 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     public void UpdateNoteScale()
     {
-        noteEnabled = (int)note.type == (int)Game.scale.types[(int)note.name]; // check if note type (major, minor...) == type of equivalent note in scale
+        noteEnabled = (int)note.type == (int)Game.scale.types[(int)note.name] || Game.scale.types[(int)note.name] == NoteType.ANY; // check if note type (major, minor...) == type of equivalent note in scale
         if (noteEnabled)
         {
             m_renderer.material = materialEnabled;

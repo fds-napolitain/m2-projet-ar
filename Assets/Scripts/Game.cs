@@ -28,8 +28,8 @@ public class Game : MonoBehaviour
         //DontDestroyOnLoad(this.gameObject);
         controller = new Controller();
         frame = controller.Frame();
-        scale = new Scale(NoteName.C, ScaleType.MINOR);
-        PianoToucheScript.updateScale = 88;
+        scale = new Scale(NoteName.E, ScaleType.NONE);
+        PianoToucheScript.updateScale = PianoToucheScript.KEYS_NUMBER;
     }
 
     /// <summary>
