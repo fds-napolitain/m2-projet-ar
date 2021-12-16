@@ -19,9 +19,11 @@ public static class Quantization
 /// <summary>
 /// Note.
 /// </summary>
-public class Note
+public struct Note
 {
-
+	NoteName name;
+	NoteType type;
+	NoteTone tone;
 }
 
 /// <summary>
@@ -46,6 +48,22 @@ public enum NoteType
 	MAJOR,
 	MINOR,
 	ANY,
+	NONE,
+}
+
+/// <summary>
+/// Tonalité de la note.
+/// </summary>
+public enum NoteTone
+{
+	TONE0,
+	TONE1,
+	TONE2,
+	TONE3,
+	TONE4,
+	TONE5,
+	TONE6,
+	TONE7,
 }
 
 /// <summary>
