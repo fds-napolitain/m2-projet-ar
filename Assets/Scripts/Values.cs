@@ -19,16 +19,18 @@ public static class Quantization
 /// <summary>
 /// Note.
 /// </summary>
+[System.Serializable]
 public struct Note
 {
-	NoteName name;
-	NoteType type;
-	NoteTone tone;
+	public NoteName name;
+	public NoteType type;
+	public NoteTone tone;
 }
 
 /// <summary>
 /// Liste des notes.
 /// </summary>
+[System.Serializable]
 public enum NoteName
 {
 	C,
@@ -43,6 +45,7 @@ public enum NoteName
 /// <summary>
 /// Note majeures (blanche) ou mineures (noires)
 /// </summary>
+[System.Serializable]
 public enum NoteType
 {
 	MAJOR,
@@ -54,6 +57,7 @@ public enum NoteType
 /// <summary>
 /// Tonalité de la note.
 /// </summary>
+[System.Serializable]
 public enum NoteTone
 {
 	TONE0,
