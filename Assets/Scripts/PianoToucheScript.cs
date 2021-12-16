@@ -16,16 +16,33 @@ using System;
 /// </summary>
 public class PianoToucheScript : MonoBehaviour
 {
-    // audio
+    // ================ AUDIO ATTRIBUTES ============
+
+    // const
     private const float RELEASE_TIME = 0.33f;
     private const float VELOCITY_MAX = 0.5f;
     private const float VOLUME_MIN = 0.25f;
     private const float VOLUME_MAX = 1f;
+    private const int KEYS_NUMBER = 88;
+    
+    // release
     private float release_tmp = 0;
     private float release = Mathf.Infinity; // infinite = false, float:x = play at x
+    
+    // play audio
     private float playNote = -1f; // -1 = false, float:x = play at x
     private AudioSource audioSource;
+
+    // note
     public Note note;
+    private bool noteEnabled = true;
+    public static int updateScale = 88;
+    private Renderer m_renderer;
+    private Material materialEnabled;
+    private Material materialDisabled;
+
+
+    // ==================== METHODS ======================
 
     /// <summary>
     /// Appelé au début du script.
@@ -33,6 +50,9 @@ public class PianoToucheScript : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>(); // recupere l'audiosource dans une variable
+        m_renderer = GetComponent<Renderer>(); // renderer used for changing material of keys
+        materialEnabled = m_renderer.material; // black or white key
+        materialDisabled = Resources.Load<Material>("Materials/Piano/Gray_DISABLED"); // gray_disabled key
     }
 
     /// <summary>
@@ -41,26 +61,29 @@ public class PianoToucheScript : MonoBehaviour
     /// <param name="collider"></param>
     void OnTriggerEnter(Collider collider)
     {
-        int a = Convert.ToInt32(collider.name);
-        if (Game.frame.Hands.Count >= 1 && !Game.frame.Hands[0].IsLeft) // si la main "gauche" est celle de "droite"
+        if (noteEnabled)
         {
-            if (a > 4) // inversement
+            int a = Convert.ToInt32(collider.name);
+            if (Game.frame.Hands.Count >= 1 && !Game.frame.Hands[0].IsLeft) // si la main "gauche" est celle de "droite"
             {
-                a -= 5;
+                if (a > 4) // inversement
+                {
+                    a -= 5;
+                }
+                else
+                {
+                    a += 5;
+                }
             }
-            else
+            if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
             {
-                a += 5;
-            }
-        } 
-        if (Game.frame.Hands[a/5].Fingers[a%5].IsExtended) // joue le son
-        {
-            //Debug.Log("Note détectée: " + Game.currentTime);
-            playNote = Game.CurrentTimeQuantized;
-            if (playNote == Game.CurrentTime)
-            {
-                audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity)) / VELOCITY_MAX);
-                PlayNote();
+                //Debug.Log("Note détectée: " + Game.currentTime);
+                playNote = Game.CurrentTimeQuantized;
+                if (playNote == Game.CurrentTime)
+                {
+                    audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity)) / VELOCITY_MAX);
+                    PlayNote();
+                }
             }
         }
     }
@@ -100,6 +123,11 @@ public class PianoToucheScript : MonoBehaviour
                 audioSource.volume = 1f;
             }
         }
+        if (updateScale != 0)
+        {
+            updateScale--;
+            UpdateNoteScale();
+        }
     }
 
     /// <summary>
@@ -113,6 +141,22 @@ public class PianoToucheScript : MonoBehaviour
             audioSource.Play();
             //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
             playNote = -1f;
+        }
+    }
+
+    /// <summary>
+    /// Enable or disable note depending on scale.
+    /// </summary>
+    public void UpdateNoteScale()
+    {
+        noteEnabled = (int)note.type == (int)Game.scale.types[(int)note.name]; // check if note type (major, minor...) == type of equivalent note in scale
+        if (noteEnabled)
+        {
+            m_renderer.material = materialEnabled;
+        }
+        else
+        {
+            m_renderer.material = materialDisabled;
         }
     }
 }

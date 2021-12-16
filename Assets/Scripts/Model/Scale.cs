@@ -1,25 +1,21 @@
+using System.Collections.Generic;
+
 /// <summary>
 /// Gamme : note de base + gamme associée
 /// </summary>
 public class Scale
 {
+	private const int NOTE_NUMBERS = 7;
 	public NoteName note;
-	private ScaleType scale;
-	private NoteType note1;
-	private NoteType note2;
-	private NoteType note3;
-	private NoteType note4;
-	private NoteType note5;
-	private NoteType note6;
-	private NoteType note7;
+	public ScaleType scale;
+	public NoteType[] types = new NoteType[NOTE_NUMBERS];
 
 	/// <summary>
-    /// Default constructeur
-    /// </summary>
+	/// Default constructeur
+	/// </summary>
 	public Scale()
-    {
-		this.note = NoteName.C;
-		SetScale(ScaleType.None);
+	{
+		SetScale(NoteName.C, ScaleType.NONE);
     }
 
 	/// <summary>
@@ -29,45 +25,45 @@ public class Scale
     /// <param name="scale"></param>
 	public Scale(NoteName note, ScaleType scale)
 	{
-		this.note = note;
-		SetScale(scale);
+		SetScale(note, scale);
 	}
 
 	/// <summary>
     /// Called everytime to change a scale.
     /// </summary>
     /// <param name="scale"></param>
-	public void SetScale(ScaleType scale)
+	public void SetScale(NoteName name, ScaleType scale)
     {
+		this.note = name;
 		this.scale = scale;
 		switch (scale)
 		{
-			case ScaleType.None: // toutes les notes
-				note1 = NoteType.ANY;
-				note2 = NoteType.ANY;
-				note3 = NoteType.ANY;
-				note4 = NoteType.ANY;
-				note5 = NoteType.ANY;
-				note6 = NoteType.ANY;
-				note7 = NoteType.ANY;
+			case ScaleType.NONE: // toutes les notes
+				types[(0 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
+				types[(1 + (int)note) % NOTE_NUMBERS] = NoteType.ANY; // D + D = E (NOTE2 becomes NOTE3 in C,D,E,F,G,A,B)
+				types[(2 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
+				types[(3 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
+				types[(4 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
+				types[(5 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
+				types[(6 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
 				break;
-			case ScaleType.Major: // gamme majeure
-				note1 = NoteType.MAJOR;
-				note2 = NoteType.MAJOR;
-				note3 = NoteType.MAJOR;
-				note4 = NoteType.MAJOR;
-				note5 = NoteType.MAJOR;
-				note6 = NoteType.MAJOR;
-				note7 = NoteType.MAJOR;
+			case ScaleType.MAJOR: // gamme majeure
+				types[(0 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(1 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(2 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(3 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(4 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(5 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(6 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
 				break;
-			case ScaleType.Minor: // gamme mineure
-				note1 = NoteType.MAJOR;
-				note2 = NoteType.MAJOR;
-				note3 = NoteType.MINOR;
-				note4 = NoteType.MAJOR;
-				note5 = NoteType.MAJOR;
-				note6 = NoteType.MINOR;
-				note7 = NoteType.MINOR;
+			case ScaleType.MINOR: // gamme mineure
+				types[(0 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(1 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(2 + (int)note) % NOTE_NUMBERS] = NoteType.MINOR;
+				types[(3 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(4 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(5 + (int)note) % NOTE_NUMBERS] = NoteType.MINOR;
+				types[(6 + (int)note) % NOTE_NUMBERS] = NoteType.MINOR;
 				break;
 		}
 	}
@@ -78,7 +74,7 @@ public class Scale
 /// </summary>
 public enum ScaleType
 {
-	None,
-	Major,
-	Minor,
+	NONE,
+	MAJOR,
+	MINOR,
 }

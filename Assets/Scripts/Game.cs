@@ -28,7 +28,8 @@ public class Game : MonoBehaviour
         //DontDestroyOnLoad(this.gameObject);
         controller = new Controller();
         frame = controller.Frame();
-        scale = new Scale(NoteName.C, ScaleType.Minor);
+        scale = new Scale(NoteName.C, ScaleType.MINOR);
+        PianoToucheScript.updateScale = 88;
     }
 
     /// <summary>
@@ -69,5 +70,13 @@ public class Game : MonoBehaviour
                 return (Mathf.Round(currentTime / QUANTIZATION) * QUANTIZATION + QUANTIZATION / 2) / (TEMPO / 60);
             }
         }
+    }
+
+    /// <summary>
+    /// TBC...
+    /// </summary>
+    public static void SetGame()
+    {
+
     }
 }

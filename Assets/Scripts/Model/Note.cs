@@ -2,7 +2,7 @@
 /// Note.
 /// </summary>
 [System.Serializable]
-public struct Note
+public class Note
 {
 	public NoteName name; // ex: C
 	public NoteType type; // ex: MAJOR
