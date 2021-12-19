@@ -12,7 +12,7 @@ using UnityEngine;
 using System;
 
 /// <summary>
-/// Script liée à chaque touche
+/// Script li?e ? chaque touche
 /// </summary>
 public class PianoToucheScript : MonoBehaviour
 {
@@ -45,7 +45,7 @@ public class PianoToucheScript : MonoBehaviour
     // ==================== METHODS ======================
 
     /// <summary>
-    /// Appelé au début du script.
+    /// Appel? au d?but du script.
     /// </summary>
     void Start()
     {
@@ -77,7 +77,7 @@ public class PianoToucheScript : MonoBehaviour
             }
             if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
             {
-                //Debug.Log("Note détectée: " + Game.currentTime);
+                //Debug.Log("Note d?tect?e: " + Game.currentTime);
                 playNote = Game.CurrentTimeQuantized;
                 if (playNote == Game.CurrentTime)
                 {
@@ -89,7 +89,7 @@ public class PianoToucheScript : MonoBehaviour
     }
 
     /// <summary>
-    /// Quand on arrête de toucher une note avec le doigt.
+    /// Quand on arr?te de toucher une note avec le doigt.
     /// </summary>
     void OnTriggerExit()
     {
@@ -123,10 +123,20 @@ public class PianoToucheScript : MonoBehaviour
                 audioSource.volume = 1f;
             }
         }
+        // mise ? jour de la gamme
         if (updateScale != 0)
         {
             updateScale--;
             UpdateNoteScale();
+        }
+        // joue une musique
+        List<Event> events = Song.events.Events(Game.CurrentTime, Time.deltaTime);
+        for (int i = 0; i < events.Count; i++)
+        {
+            if (events[i].notes.Contains(note))
+            {
+                playNote = events[i].attack;
+            }
         }
     }
 
@@ -137,7 +147,7 @@ public class PianoToucheScript : MonoBehaviour
     {
         if (playNote != -1f) // joue la note, rotate la touche
         {
-            //Debug.Log("Note début: " + Game.currentTime);
+            //Debug.Log("Note d?but: " + Game.currentTime);
             audioSource.Play();
             //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
             playNote = -1f;
