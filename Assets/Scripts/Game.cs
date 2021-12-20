@@ -4,7 +4,7 @@ using Leap;
 
 /// <summary>
 /// Script principal du jeu.
-/// Attaché à la caméra (donc DontDestroyOnLoad garde la SmartCamera aussi).
+/// Attach? ? la cam?ra (donc DontDestroyOnLoad garde la SmartCamera aussi).
 /// </summary>
 public class Game : MonoBehaviour
 {
@@ -21,14 +21,14 @@ public class Game : MonoBehaviour
 
 
     /// <summary>
-    /// Initialisations au début.
+    /// Initialisations au d?but.
     /// </summary>
     void Start()
     {
         //DontDestroyOnLoad(this.gameObject);
         controller = new Controller();
         frame = controller.Frame();
-        scale = new Scale(NoteName.E, ScaleType.NONE);
+        scale = new Scale(NoteName.D, ScaleType.MAJOR);
         PianoToucheScript.updateScale = PianoToucheScript.KEYS_NUMBER;
     }
 

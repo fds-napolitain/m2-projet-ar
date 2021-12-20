@@ -126,10 +126,10 @@ public class PianoToucheScript : MonoBehaviour
         // mise ? jour de la gamme
         if (updateScale != 0)
         {
-            updateScale--;
             UpdateNoteScale();
         }
         // joue une musique
+        /* trop lent => latence 5x plus élevée
         List<Event> events = Song.events.Events(Game.CurrentTime, Time.deltaTime);
         for (int i = 0; i < events.Count; i++)
         {
@@ -138,6 +138,7 @@ public class PianoToucheScript : MonoBehaviour
                 playNote = events[i].attack;
             }
         }
+        */
     }
 
     /// <summary>
@@ -159,8 +160,8 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     public void UpdateNoteScale()
     {
-        noteEnabled = (int)note.type == (int)Game.scale.types[(int)note.name] || Game.scale.types[(int)note.name] == NoteType.ANY; // check if note type (major, minor...) == type of equivalent note in scale
-        if (noteEnabled)
+        updateScale--;
+        if (Game.scale.types[(int)note.name]) // check if note is in scale
         {
             m_renderer.material = materialEnabled;
         }

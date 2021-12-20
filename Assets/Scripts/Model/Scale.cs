@@ -1,14 +1,14 @@
 using System.Collections.Generic;
 
 /// <summary>
-/// Gamme : note de base + gamme associée
+/// Gamme : note de base + gamme associ?e
 /// </summary>
 public class Scale
 {
-	private const int NOTE_NUMBERS = 7;
+	private const int SEMITONES_NUMBER = 12;
 	public NoteName note;
 	public ScaleType scale;
-	public NoteType[] types = new NoteType[NOTE_NUMBERS];
+	public bool[] types = new bool[SEMITONES_NUMBER]; // note activÃ©e ou non
 
 	/// <summary>
 	/// Default constructeur
@@ -36,41 +36,42 @@ public class Scale
     {
 		this.note = name;
 		this.scale = scale;
+		for (int i = 0; i < types.Length; i++)
+        {
+			types[i] = false;
+        }
 		switch (scale)
 		{
 			case ScaleType.NONE: // toutes les notes
-				types[(0 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
-				types[(1 + (int)note) % NOTE_NUMBERS] = NoteType.ANY; // D + D = E (NOTE2 becomes NOTE3 in C,D,E,F,G,A,B)
-				types[(2 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
-				types[(3 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
-				types[(4 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
-				types[(5 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
-				types[(6 + (int)note) % NOTE_NUMBERS] = NoteType.ANY;
+				for (int i = 0; i < types.Length; i++)
+				{
+					types[i] = true;
+				}
 				break;
 			case ScaleType.MAJOR: // gamme majeure
-				types[(0 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(1 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(2 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(3 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(4 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(5 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(6 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
+				types[(0 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(2 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(4 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(5 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(7 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(9 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(11 + (int)note) % SEMITONES_NUMBER] = true;
 				break;
 			case ScaleType.MINOR: // gamme mineure
-				types[(0 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(1 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(2 + (int)note) % NOTE_NUMBERS] = NoteType.MINOR;
-				types[(3 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(4 + (int)note) % NOTE_NUMBERS] = NoteType.MAJOR;
-				types[(5 + (int)note) % NOTE_NUMBERS] = NoteType.MINOR;
-				types[(6 + (int)note) % NOTE_NUMBERS] = NoteType.MINOR;
+				types[(0 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(2 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(3 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(5 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(6 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(8 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(10 + (int)note) % SEMITONES_NUMBER] = true;
 				break;
 		}
 	}
 }
 
 /// <summary>
-/// Gammes théorique.
+/// Gammes th?orique.
 /// </summary>
 public enum ScaleType
 {

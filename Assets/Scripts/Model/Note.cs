@@ -5,39 +5,37 @@
 public class Note
 {
 	public NoteName name; // ex: C
-	public NoteType type; // ex: MAJOR
 	public NoteTone tone; // ex: 4
+
+	public Note(NoteName name, NoteTone tone)
+    {
+		this.name = name;
+		this.tone = tone;
+    }
 }
 
 /// <summary>
-/// Liste des notes.
+/// Liste des demi tons.
 /// </summary>
 [System.Serializable]
 public enum NoteName
 {
 	C,
+	Db,
 	D,
+	Eb,
 	E,
 	F,
+	Gb,
 	G,
+	Ab,
 	A,
+	Bb,
 	B,
 }
 
 /// <summary>
-/// Note majeures (blanche) ou mineures (noires)
-/// </summary>
-[System.Serializable]
-public enum NoteType
-{
-	MAJOR,
-	MINOR,
-	ANY,
-	NONE,
-}
-
-/// <summary>
-/// Tonalité de la note.
+/// Tonalit? de la note.
 /// </summary>
 [System.Serializable]
 public enum NoteTone
