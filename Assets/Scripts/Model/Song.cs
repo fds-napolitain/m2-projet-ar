@@ -176,6 +176,7 @@ public static class Song
 {
     public static SortedEvents events;
     public static float score = 0;
+    public static List<Event> currentEvents; 
 
     public static void SetMusicToImagine()
     {

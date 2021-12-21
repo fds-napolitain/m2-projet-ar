@@ -39,6 +39,7 @@ public class Game : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         frame = controller.Frame();
+        Song.currentEvents = Song.events.Events(Game.CurrentTime, Time.deltaTime);
     }
 
     /// <summary>
