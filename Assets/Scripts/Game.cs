@@ -29,6 +29,7 @@ public class Game : MonoBehaviour
         controller = new Controller();
         frame = controller.Frame();
         scale = new Scale(NoteName.D, ScaleType.MAJOR);
+        Song.SetMusicToImagine();
         PianoToucheScript.updateScale = PianoToucheScript.KEYS_NUMBER;
     }
 
