@@ -12,6 +12,85 @@ public class Note
 		this.name = name;
 		this.tone = tone;
     }
+
+    public override bool Equals(object obj)
+    {
+        return obj is Note note &&
+               name == note.name &&
+               tone == note.tone;
+    }
+
+    public override string ToString()
+    {
+		string result = "";
+        switch (name)
+        {
+            case NoteName.C:
+                result += "C";
+                break;
+            case NoteName.Db:
+                result += "Db";
+                break;
+            case NoteName.D:
+                result += "D";
+                break;
+            case NoteName.Eb:
+                result += "Eb";
+                break;
+            case NoteName.E:
+                result += "E";
+                break;
+            case NoteName.F:
+                result += "F";
+                break;
+            case NoteName.Gb:
+                result += "Gb";
+                break;
+            case NoteName.G:
+                result += "G";
+                break;
+            case NoteName.Ab:
+                result += "Ab";
+                break;
+            case NoteName.A:
+                result += "A";
+                break;
+            case NoteName.Bb:
+                result += "Bb";
+                break;
+            case NoteName.B:
+                result += "B";
+                break;
+        }
+        switch (tone)
+        {
+            case NoteTone.TONE0:
+                result += "0";
+                break;
+            case NoteTone.TONE1:
+                result += "1";
+                break;
+            case NoteTone.TONE2:
+                result += "2";
+                break;
+            case NoteTone.TONE3:
+                result += "3";
+                break;
+            case NoteTone.TONE4:
+                result += "4";
+                break;
+            case NoteTone.TONE5:
+                result += "5";
+                break;
+            case NoteTone.TONE6:
+                result += "6";
+                break;
+            case NoteTone.TONE7:
+                result += "7";
+                break;
+        }
+        return result;
+    }
 }
 
 /// <summary>

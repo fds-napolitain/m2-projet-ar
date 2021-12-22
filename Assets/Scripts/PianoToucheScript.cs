@@ -86,14 +86,14 @@ public class PianoToucheScript : MonoBehaviour
             UpdateNoteScale();
         }
         // joue une musique
-        // trop lent => latence 5x plus élevée
-        /*for (int i = 0; i < Song.currentEvents.Count; i++)
+        for (int i = 0; i < Game.song.currentEvents.Count; i++)
         {
-            if (Song.currentEvents[i].notes.Contains(note))
+            if (Game.song.currentEvents[i].notes.Contains(note))
             {
-                playNote = Song.currentEvents[i].attack;
+                Debug.Log("Play: " + note.ToString());
+                playNote = Game.song.currentEvents[i].attack;
             }
-        }*/
+        }
     }
 
     /// <summary>

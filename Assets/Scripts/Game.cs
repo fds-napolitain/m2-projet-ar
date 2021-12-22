@@ -13,6 +13,7 @@ public class Game : MonoBehaviour
     public static int TEMPO = 76;
     private static float currentTime = 0f; // temps absolu (tempo = 60)
     public static float CurrentTime { get => currentTime / (TEMPO / 60); } // temps relatif (tempo pris en compte)
+    public static float DeltaTime { get => Time.deltaTime / (TEMPO / 60); } // delta time relatif au tempo
     public static Scale scale;
     public static Song song;
 
@@ -22,7 +23,7 @@ public class Game : MonoBehaviour
 
 
     /// <summary>
-    /// Initialisations au d?but.
+    /// Initialisations au début.
     /// </summary>
     void Start()
     {
@@ -41,7 +42,7 @@ public class Game : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         frame = controller.Frame();
-        song.currentEvents = song.events.GetEvents(Game.CurrentTime, Time.deltaTime);
+        song.currentEvents = song.events.GetEvents();
     }
 
     /// <summary>

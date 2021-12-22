@@ -44,125 +44,32 @@ public class Event
         return Equals(obj as Event);
     }
 
+    /// <summary>
+    /// Deux Events identiques si id1 == id2
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
     public bool Equals(Event other)
     {
         return other != null &&
                id == other.id;
     }
 
+    /// <summary>
+    /// Evenement unique : attack + id
+    /// </summary>
+    /// <returns></returns>
     public override int GetHashCode()
     {
         return (int)attack + id;
     }
 
+    /// <summary>
+    /// Trier par temps d'attack
+    /// </summary>
+    /// <returns></returns>
     public float GetCurrentTime()
     {
         return attack;
-    }
-}
-
-/// <summary>
-/// Création de 0 d'une sorted list.
-/// </summary>
-public class SortedEvents
-{
-    private List<Event> events;
-
-    /// <summary>
-    /// Initialise une sorted list d'events custom.
-    /// </summary>
-    public SortedEvents()
-    {
-        events = new List<Event>();
-    }
-
-    /// <summary>
-    /// Ajoute un event dans la liste de manière triée par ordre de attack+id
-    /// </summary>
-    /// <param name="item"></param>
-    public void AddEvent(Event item)
-    {
-        for (int i = 0; i < events.Count; i++)
-        {
-            if (events[i].GetCurrentTime() > item.GetCurrentTime()) // ne peut être égal
-            {
-                events.Insert(i, item); // insère l'item à sa place
-                return;
-            }
-        }
-        events.Add(item); // ajoute l'item si la liste est vide
-    }
-
-    /// <summary>
-    /// Supprime un élément de liste.
-    /// </summary>
-    /// <param name="item"></param>
-    public void RemoveEvent(Event item)
-    {
-        events.Remove(item);
-    }
-
-    /// <summary>
-    /// Recherche par dichotomie par intervalle de temps
-    /// </summary>
-    /// <param name="currentTime"></param>
-    /// <param name="deltaTime"></param>
-    /// <returns></returns>
-    public List<Event> GetEvents(float currentTime, float deltaTime)
-    {
-        int index = events.Count / 2;
-        int step = events.Count / 4;
-        while (events[index].GetCurrentTime() < currentTime + deltaTime || events[index].GetCurrentTime() > currentTime - deltaTime)
-        {
-            if (step == 0)
-            {
-                return new List<Event>();
-            }
-            if (events[index].GetCurrentTime() > currentTime)
-            {
-                index += step;
-            }
-            else
-            {
-                index -= step;
-            }
-            step /= 2;
-        }
-        List<Event> result = new List<Event>();
-        while (events[index - 1].GetCurrentTime() == currentTime)
-        {
-            index--;
-        }
-        while (events[index].GetCurrentTime() == currentTime)
-        {
-            result.Add(events[index]);
-            index++;
-        }
-        return result;
-    }
-
-    /// <summary>
-    /// Comparaison entre deux events :
-    /// - 1 si x > y
-    /// - -1 si x < y
-    /// - 0 sinon
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <returns></returns>
-    public int Compare(Event x, Event y)
-    {
-        if (x.GetCurrentTime() < y.GetCurrentTime())
-        {
-            return -1;
-        }
-        else if (x.GetCurrentTime() > y.GetCurrentTime())
-        {
-            return 1;
-        }
-        else
-        {
-            return 0;
-        }
     }
 }
