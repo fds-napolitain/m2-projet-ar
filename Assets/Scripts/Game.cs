@@ -14,6 +14,7 @@ public class Game : MonoBehaviour
     private static float currentTime = 0f; // temps absolu (tempo = 60)
     public static float CurrentTime { get => currentTime / (TEMPO / 60); } // temps relatif (tempo pris en compte)
     public static Scale scale;
+    public static Song song;
 
     // interactions
     public static Controller controller;
@@ -29,7 +30,7 @@ public class Game : MonoBehaviour
         controller = new Controller();
         frame = controller.Frame();
         scale = new Scale(NoteName.D, ScaleType.MAJOR);
-        //Song.SetMusicToImagine();
+        song = new Song();
         PianoToucheScript.updateScale = PianoToucheScript.KEYS_NUMBER;
     }
 
@@ -40,7 +41,7 @@ public class Game : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         frame = controller.Frame();
-        //Song.currentEvents = Song.events.Events(Game.CurrentTime, Time.deltaTime);
+        song.currentEvents = song.events.GetEvents(Game.CurrentTime, Time.deltaTime);
     }
 
     /// <summary>
@@ -72,13 +73,5 @@ public class Game : MonoBehaviour
                 return (Mathf.Round(currentTime / QUANTIZATION) * QUANTIZATION + QUANTIZATION / 2) / (TEMPO / 60);
             }
         }
-    }
-
-    /// <summary>
-    /// TBC...
-    /// </summary>
-    public static void SetGame()
-    {
-
     }
 }
