@@ -29,7 +29,7 @@ public class Game : MonoBehaviour
         controller = new Controller();
         frame = controller.Frame();
         scale = new Scale(NoteName.D, ScaleType.MAJOR);
-        Song.SetMusicToImagine();
+        //Song.SetMusicToImagine();
         PianoToucheScript.updateScale = PianoToucheScript.KEYS_NUMBER;
     }
 
@@ -40,7 +40,7 @@ public class Game : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         frame = controller.Frame();
-        Song.currentEvents = Song.events.Events(Game.CurrentTime, Time.deltaTime);
+        //Song.currentEvents = Song.events.Events(Game.CurrentTime, Time.deltaTime);
     }
 
     /// <summary>

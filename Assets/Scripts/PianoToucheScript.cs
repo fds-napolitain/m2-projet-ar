@@ -56,6 +56,47 @@ public class PianoToucheScript : MonoBehaviour
     }
 
     /// <summary>
+    /// Chaque frame, joue les sons ou non.
+    /// </summary>
+    void Update()
+    {
+        // quantification de notes
+        if (Game.CurrentTime >= playNote)
+        {
+            //Debug.Log(playNote + " " + Game.currentTime);
+            PlayNote();
+        }
+        // release de la touche jusqu'a fin de note (release_time)
+        if (Game.CurrentTime >= release)
+        {
+            release_tmp += Time.deltaTime;
+            audioSource.volume -= Time.deltaTime / RELEASE_TIME;
+            if (release_tmp >= RELEASE_TIME)
+            {
+                //Debug.Log("Note stop: " + Game.currentTime);
+                release_tmp = 0;
+                release = Mathf.Infinity;
+                audioSource.Stop();
+                audioSource.volume = 1f;
+            }
+        }
+        // mise ? jour de la gamme
+        if (updateScale != 0)
+        {
+            UpdateNoteScale();
+        }
+        // joue une musique
+        // trop lent => latence 5x plus élevée
+        /*for (int i = 0; i < Song.currentEvents.Count; i++)
+        {
+            if (Song.currentEvents[i].notes.Contains(note))
+            {
+                playNote = Song.currentEvents[i].attack;
+            }
+        }*/
+    }
+
+    /// <summary>
     /// Quand on touche une note avec un doigt.
     /// </summary>
     /// <param name="collider"></param>
@@ -96,47 +137,6 @@ public class PianoToucheScript : MonoBehaviour
         //Debug.Log("Note release: " + Game.currentTime);
         float release = Game.CurrentTimeQuantized;
         //transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
-    }
-
-    /// <summary>
-    /// Chaque frame, joue les sons ou non.
-    /// </summary>
-    void Update()
-    {
-        // quantification de notes
-        if (Game.CurrentTime >= playNote)
-        {
-            //Debug.Log(playNote + " " + Game.currentTime);
-            PlayNote();
-        }
-        // release de la touche jusqu'a fin de note (release_time)
-        if (Game.CurrentTime >= release) 
-        {
-            release_tmp += Time.deltaTime;
-            audioSource.volume -= Time.deltaTime / RELEASE_TIME;
-            if (release_tmp >= RELEASE_TIME)
-            {
-                //Debug.Log("Note stop: " + Game.currentTime);
-                release_tmp = 0;
-                release = Mathf.Infinity;
-                audioSource.Stop();
-                audioSource.volume = 1f;
-            }
-        }
-        // mise ? jour de la gamme
-        if (updateScale != 0)
-        {
-            UpdateNoteScale();
-        }
-        // joue une musique
-        // trop lent => latence 5x plus élevée
-        for (int i = 0; i < Song.currentEvents.Count; i++)
-        {
-            if (Song.currentEvents[i].notes.Contains(note))
-            {
-                playNote = Song.currentEvents[i].attack;
-            }
-        }
     }
 
     /// <summary>
