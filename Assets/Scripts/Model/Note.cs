@@ -1,8 +1,10 @@
+using System;
+
 /// <summary>
 /// Note.
 /// </summary>
 [System.Serializable]
-public class Note
+public class Note : IComparable<Note>
 {
 	public NoteName name; // ex: C
 	public NoteTone tone; // ex: 4
@@ -11,6 +13,27 @@ public class Note
     {
 		this.name = name;
 		this.tone = tone;
+    }
+
+    /// <summary>
+    /// Une note x est inférieur à une note y si sa hauteur est inférieur à la note y.
+    /// </summary>
+    /// <param name="other"></param>
+    /// <returns></returns>
+    public int CompareTo(Note other)
+    {
+        if (tone < other.tone || tone == other.tone && name < other.name)
+        {
+            return -1;
+        }
+        else if (tone == other.tone && name == other.name)
+        {
+            return 0;
+        }
+        else
+        {
+            return 1;
+        }
     }
 
     public override bool Equals(object obj)
@@ -91,6 +114,17 @@ public class Note
         }
         return result;
     }
+
+    /// <summary>
+    /// Transpose par demi tons
+    /// </summary>
+    /// <param name="semitones"></param>
+    public Note Transpose(int semitones)
+    {
+        int st = Math.Abs(semitones) % 12;
+        int o = (int)Math.Truncate(Math.Abs(semitones) / 12.0);
+        return semitones > 0 ? new Note(name + st, tone + o) : new Note(name - st, tone - o);
+    }
 }
 
 /// <summary>
@@ -114,7 +148,7 @@ public enum NoteName
 }
 
 /// <summary>
-/// Tonalit? de la note.
+/// Tonalité de la note.
 /// </summary>
 [System.Serializable]
 public enum NoteTone

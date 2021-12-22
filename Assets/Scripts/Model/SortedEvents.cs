@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using UnityEngine;
 
 /// <summary>
 /// Création de 0 d'une sorted list.
@@ -46,13 +45,14 @@ public class SortedEvents
     /// <summary>
     /// Iteration rapide par index en cache de la liste des événements.
     /// </summary>
-    /// <returns></returns>
-    public List<Event> GetEvents()
+    /// <param name="interval">Interval de temps pour les événements (par ex, une mesure, deltatime...)</param>
+    /// <returns>Liste des événements trouvés</returns>
+    public List<Event> GetEvents(float interval)
     {
         List<Event> result = new List<Event>();
         while (fastIndex < events.Count && events[fastIndex].GetCurrentTime() < Game.CurrentTime) // tant que l'événement est inférieur au temps 
         {
-            if (events[fastIndex].GetCurrentTime() > Game.CurrentTime - Game.DeltaTime) // si l'événement est supérieur au temps - interval frame
+            if (events[fastIndex].GetCurrentTime() > Game.CurrentTime - interval) // si l'événement est supérieur au temps - interval frame
             {
                 result.Add(events[fastIndex]); // ajoute événement
             }

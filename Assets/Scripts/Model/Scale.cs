@@ -1,11 +1,9 @@
-using System.Collections.Generic;
-
 /// <summary>
-/// Gamme : note de base + gamme associ?e
+/// Gamme : note de base + gamme associée
 /// </summary>
 public class Scale
 {
-	private const int SEMITONES_NUMBER = 12;
+	public const int SEMITONES_NUMBER = 12;
 	public NoteName note;
 	public ScaleType scale;
 	public bool[] types = new bool[SEMITONES_NUMBER]; // note activée ou non
@@ -71,7 +69,7 @@ public class Scale
 }
 
 /// <summary>
-/// Gammes th?orique.
+/// Gammes théorique.
 /// </summary>
 public enum ScaleType
 {

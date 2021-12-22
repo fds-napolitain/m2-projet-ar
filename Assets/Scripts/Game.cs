@@ -4,7 +4,7 @@ using Leap;
 
 /// <summary>
 /// Script principal du jeu.
-/// Attach? ? la cam?ra (donc DontDestroyOnLoad garde la SmartCamera aussi).
+/// Attaché à la caméra (donc DontDestroyOnLoad garde la SmartCamera aussi).
 /// </summary>
 public class Game : MonoBehaviour
 {
@@ -42,7 +42,7 @@ public class Game : MonoBehaviour
     {
         currentTime += Time.deltaTime;
         frame = controller.Frame();
-        song.currentEvents = song.events.GetEvents();
+        song.currentEvents = song.events.GetEvents(DeltaTime);
     }
 
     /// <summary>
