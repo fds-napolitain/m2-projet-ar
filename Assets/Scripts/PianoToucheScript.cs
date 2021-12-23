@@ -29,6 +29,10 @@ public class PianoToucheScript : MonoBehaviour
     
     // play audio
     private float playNote = -1f; // -1 = false, float:x = play at x
+    private Vector3 basePos;
+    private Quaternion baseRot;
+    private Vector3 rotatedPos;
+    private Quaternion rotatedRot;
     private AudioSource audioSource;
 
     // note
@@ -45,12 +49,18 @@ public class PianoToucheScript : MonoBehaviour
     /// <summary>
     /// Appelé au début du script.
     /// </summary>
-    void Start()
+    void Start() 
     {
         audioSource = GetComponent<AudioSource>(); // recupere l'audiosource dans une variable
         m_renderer = GetComponent<Renderer>(); // renderer used for changing material of keys
         materialEnabled = m_renderer.material; // black or white key
         materialDisabled = Resources.Load<Material>("Materials/Piano/Gray_DISABLED"); // gray_disabled key
+        basePos = this.transform.position;
+        baseRot = this.transform.rotation;
+        transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
+        rotatedPos = this.transform.position;
+        rotatedRot = this.transform.rotation;
+        transform.SetPositionAndRotation(basePos, baseRot);
     }
 
     /// <summary>
@@ -136,6 +146,7 @@ public class PianoToucheScript : MonoBehaviour
         //Debug.Log("Note release: " + Game.currentTime);
         float release = Game.CurrentTimeQuantized;
         //transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
+        transform.SetPositionAndRotation(basePos, baseRot);
         Chords.currentChords.Remove(note);
     }
 
@@ -149,6 +160,7 @@ public class PianoToucheScript : MonoBehaviour
             //Debug.Log("Note d?but: " + Game.currentTime);
             audioSource.Play();
             //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
+            transform.SetPositionAndRotation(rotatedPos, rotatedRot);
             playNote = -1f;
         }
     }
