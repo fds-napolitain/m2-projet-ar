@@ -39,46 +39,121 @@ public class Chords
         new bool[] { true, false, false, false, false, true, false, true, false, false, false, false, false }, // Csus4
     };
 
-    // VAR
-    public List<Note> notes = new List<Note>();
+    public NoteName name;
+    public ChordsType chords;
 
-    // ==================== METHODS =======================
-    public Chords()
+    public Chords(NoteName name, ChordsType chords)
     {
-        
+        this.name = name;
+        this.chords = chords;
     }
 
-    /// <summary>
-    /// Appelle Note.Transpose sur chaque notes.
-    /// </summary>
-    /// <param name="semitones"></param>
-    public Chords Transpose(int semitones)
+    public override string ToString()
     {
-        Chords result = new Chords();
-        for (int i = 0; i < notes.Count; i++)
+        string result = "";
+        switch (name)
         {
-            result.notes.Add(notes[i].Transpose(semitones));
+            case NoteName.C:
+                result += "C";
+                break;
+            case NoteName.Db:
+                result += "Db";
+                break;
+            case NoteName.D:
+                result += "D";
+                break;
+            case NoteName.Eb:
+                result += "Eb";
+                break;
+            case NoteName.E:
+                result += "E";
+                break;
+            case NoteName.F:
+                result += "F";
+                break;
+            case NoteName.Gb:
+                result += "Gb";
+                break;
+            case NoteName.G:
+                result += "G";
+                break;
+            case NoteName.Ab:
+                result += "Ab";
+                break;
+            case NoteName.A:
+                result += "A";
+                break;
+            case NoteName.Bb:
+                result += "Bb";
+                break;
+            case NoteName.B:
+                result += "B";
+                break;
+        }
+        switch (chords)
+        {
+            case ChordsType.CMAJOR:
+                result += " major";
+                break;
+            case ChordsType.CMAJOR7:
+                result += " major 7";
+                break;
+            case ChordsType.CMAJOR9:
+                result += " major 9";
+                break;
+            case ChordsType.CMAJOR11:
+                result += " major 11";
+                break;
+            case ChordsType.CAUG:
+                result += " augmented";
+                break;
+            case ChordsType.CMINOR:
+                result += " minor";
+                break;
+            case ChordsType.CMINOR7:
+                result += " minor 7";
+                break;
+            case ChordsType.CDIM:
+                result += " diminued";
+                break;
+            case ChordsType.CSUS:
+                result += " suspended";
+                break;
+            case ChordsType.CSUS2:
+                result += " suspended + 2";
+                break;
+            case ChordsType.CSUS4:
+                result += " suspended + 4";
+                break;
+            case ChordsType.NONE:
+                break;
         }
         return result;
     }
 
     /// <summary>
+    /// Appelle Note.Transpose sur chaque notes.
+    /// </summary>
+    /// <param name="notes"></param>
+    /// <param name="semitones"></param>
+    public static List<Note> Transpose(List<Note> notes, int semitones)
+    {
+        List<Note> result = new List<Note>();
+        for (int i = 0; i < notes.Count; i++)
+        {
+            result.Add(notes[i].Transpose(semitones));
+        }
+        return result;
+    }
+
+    /// <summary>
+    /// Need a sorted List<Note>
     /// Transpose to a C chord.
     /// </summary>
     /// <returns></returns>
-    private Chords TransposeToBase()
+    private static int TransposeToBase(List<Note> notes)
     {
-        return new Chords();
-    }
-
-    public List<NoteName> GetNotes()
-    {
-        List<NoteName> result = new List<NoteName>();
-        for (int i = 0; i < Scale.SEMITONES_NUMBER; i++)
-        {
-
-        }
-        return new List<NoteName>();
+        return (int)notes[0].name;
     }
 
     /// <summary>
@@ -86,20 +161,22 @@ public class Chords
     /// </summary>
     /// <param name="notes"></param>
     /// <returns></returns>
-    public ChordsType Recognize(List<Note> notes, bool sorted = false)
+    public static Chords Recognize(List<Note> notes, bool sorted = false)
     {
         bool[] t = new bool[] { false, false, false, false, false, false, false, false, false, false, false, false };
         // tri, fonctionne avec Note.CompareTo()
         if (!sorted)
         {
-            notes.Sort(); 
+            notes.Sort();
         }
+        // transposer la base note
+        int s = TransposeToBase(notes);
+        List<Note> transposed = Transpose(notes, s);
         // creation d'un tableau boolean pour comparer avec le dictionnaire
         for (int i = 0; i < notes.Count; i++)
         {
-            t[(int)notes[i].name] = true;
+            t[(int)transposed[i].name] = true;
         }
-        // transposer la base note
         // comparer
         for (int i = 0; i < TYPES.Length-1; i++) // iterer la liste des accords -1 (NONE)
         {
@@ -114,10 +191,9 @@ public class Chords
             }
             if (flag == true) // si l'accord était le bon retourner l'énum correspondante
             {
-                return (ChordsType)i;
+                return new Chords(notes[0].name, (ChordsType)i);
             }
         }
-        return ChordsType.NONE; // cas par défaut (NONE)
+        return new Chords(notes[0].name, ChordsType.NONE); // cas par défaut (NONE)
     }
-
 }
