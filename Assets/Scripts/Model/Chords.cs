@@ -22,7 +22,7 @@ public enum ChordsType
 
 public class Chords
 {
-    // CONST
+    // CHORDS
     private static bool[][] TYPES = new bool[][] 
     {
         // ==========   C     Db      D     Eb     E      F     Gb     G     Ab     A      Bb     B  =========
@@ -38,7 +38,10 @@ public class Chords
         new bool[] { true, false, true, false, false, false, false, true, false, false, false, false, false }, // Csus2
         new bool[] { true, false, false, false, false, true, false, true, false, false, false, false, false }, // Csus4
     };
+    private const int TYPES_NUMBER = 11; // a incrémenter si on change TYPES
+    public static List<Note> currentChords = new List<Note>();
 
+    // ATTRIBUTES
     public NoteName name;
     public ChordsType chords;
 
@@ -128,7 +131,7 @@ public class Chords
             case ChordsType.NONE:
                 break;
         }
-        return result;
+        return result.Length > 1 ? result : "";
     }
 
     /// <summary>
@@ -178,7 +181,7 @@ public class Chords
             t[(int)transposed[i].name] = true;
         }
         // comparer
-        for (int i = 0; i < TYPES.Length-1; i++) // iterer la liste des accords -1 (NONE)
+        for (int i = 0; i < TYPES_NUMBER; i++) // iterer la liste des accords
         {
             bool flag = true;
             for (int j = 0; j < 12; j++)

@@ -6,13 +6,11 @@
  * between Ultraleap and you, your company or other organization.             *
  ******************************************************************************/
 
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
 /// <summary>
-/// Script li?e ? chaque touche
+/// Script liée à chaque touche
 /// </summary>
 public class PianoToucheScript : MonoBehaviour
 {
@@ -45,7 +43,7 @@ public class PianoToucheScript : MonoBehaviour
     // ==================== METHODS ======================
 
     /// <summary>
-    /// Appel? au d?but du script.
+    /// Appelé au début du script.
     /// </summary>
     void Start()
     {
@@ -80,7 +78,7 @@ public class PianoToucheScript : MonoBehaviour
                 audioSource.volume = 1f;
             }
         }
-        // mise ? jour de la gamme
+        // mise à jour de la gamme
         if (updateScale != 0)
         {
             UpdateNoteScale();
@@ -118,25 +116,27 @@ public class PianoToucheScript : MonoBehaviour
             }
             if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
             {
-                //Debug.Log("Note d?tect?e: " + Game.currentTime);
+                //Debug.Log("Note détectée: " + Game.currentTime);
                 playNote = Game.CurrentTimeQuantized;
                 if (playNote == Game.CurrentTime)
                 {
                     audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity)) / VELOCITY_MAX);
                     PlayNote();
                 }
+                Chords.currentChords.Add(note);
             }
         }
     }
 
     /// <summary>
-    /// Quand on arr?te de toucher une note avec le doigt.
+    /// Quand on arrête de toucher une note avec le doigt.
     /// </summary>
     void OnTriggerExit()
     {
         //Debug.Log("Note release: " + Game.currentTime);
         float release = Game.CurrentTimeQuantized;
         //transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
+        Chords.currentChords.Remove(note);
     }
 
     /// <summary>
