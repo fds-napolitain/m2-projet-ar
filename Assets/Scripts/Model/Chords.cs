@@ -174,7 +174,7 @@ public class Chords
         }
         // transposer la base note
         int s = TransposeToBase(notes);
-        List<Note> transposed = Transpose(notes, s);
+        List<Note> transposed = Transpose(notes, -s);
         // creation d'un tableau boolean pour comparer avec le dictionnaire
         for (int i = 0; i < notes.Count; i++)
         {
