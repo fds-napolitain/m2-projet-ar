@@ -43,6 +43,11 @@ public class Note : IComparable<Note>
                tone == note.tone;
     }
 
+    public override int GetHashCode()
+    {
+        return (int)name * 100 + (int)tone;
+    }
+
     public override string ToString()
     {
 		string result = "";

@@ -5,7 +5,7 @@ public class Scale
 {
 	public const int SEMITONES_NUMBER = 12;
 	public NoteName note;
-	public ScaleType scale;
+	public ScaleName scale;
 	public bool[] types = new bool[SEMITONES_NUMBER]; // note activée ou non
 
 	/// <summary>
@@ -13,7 +13,7 @@ public class Scale
 	/// </summary>
 	public Scale()
 	{
-		SetScale(NoteName.C, ScaleType.NONE);
+		SetScale(NoteName.C, ScaleName.NONE);
     }
 
 	/// <summary>
@@ -21,7 +21,7 @@ public class Scale
     /// </summary>
     /// <param name="note"></param>
     /// <param name="scale"></param>
-	public Scale(NoteName note, ScaleType scale)
+	public Scale(NoteName note, ScaleName scale)
 	{
 		SetScale(note, scale);
 	}
@@ -30,7 +30,7 @@ public class Scale
     /// Called everytime to change a scale.
     /// </summary>
     /// <param name="scale"></param>
-	public void SetScale(NoteName name, ScaleType scale)
+	public void SetScale(NoteName name, ScaleName scale)
     {
 		this.note = name;
 		this.scale = scale;
@@ -40,13 +40,13 @@ public class Scale
         }
 		switch (scale)
 		{
-			case ScaleType.NONE: // toutes les notes
+			case ScaleName.NONE: // toutes les notes
 				for (int i = 0; i < types.Length; i++)
 				{
 					types[i] = true;
 				}
 				break;
-			case ScaleType.MAJOR: // gamme majeure
+			case ScaleName.MAJOR: // gamme majeure
 				types[(0 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(2 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(4 + (int)note) % SEMITONES_NUMBER] = true;
@@ -55,14 +55,14 @@ public class Scale
 				types[(9 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(11 + (int)note) % SEMITONES_NUMBER] = true;
 				break;
-			case ScaleType.MINOR: // gamme mineure
+			case ScaleName.MINOR: // gamme mineure
 				types[(0 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(2 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(3 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(5 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(6 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(8 + (int)note) % SEMITONES_NUMBER] = true;
-				types[(10 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(11 + (int)note) % SEMITONES_NUMBER] = true;
 				break;
 		}
 	}
@@ -71,7 +71,7 @@ public class Scale
 /// <summary>
 /// Gammes théorique.
 /// </summary>
-public enum ScaleType
+public enum ScaleName
 {
 	NONE,
 	MAJOR,

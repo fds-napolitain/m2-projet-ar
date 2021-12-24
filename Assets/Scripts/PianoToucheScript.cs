@@ -145,8 +145,7 @@ public class PianoToucheScript : MonoBehaviour
     {
         //Debug.Log("Note release: " + Game.currentTime);
         float release = Game.CurrentTimeQuantized;
-        //transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
-        transform.SetPositionAndRotation(basePos, baseRot);
+        //transform.SetPositionAndRotation(basePos, baseRot);
         Chords.currentChords.Remove(note);
     }
 
@@ -157,10 +156,9 @@ public class PianoToucheScript : MonoBehaviour
     {
         if (playNote != -1f) // joue la note, rotate la touche
         {
-            //Debug.Log("Note d?but: " + Game.currentTime);
+            //Debug.Log("Note début: " + Game.currentTime);
             audioSource.Play();
-            //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
-            transform.SetPositionAndRotation(rotatedPos, rotatedRot);
+            //transform.SetPositionAndRotation(rotatedPos, rotatedRot);
             playNote = -1f;
         }
     }

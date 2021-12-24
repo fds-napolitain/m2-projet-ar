@@ -23,6 +23,12 @@ namespace Assets.Scripts
             {
                 Chords chords = Chords.Recognize(Chords.currentChords);
                 overlay.text = chords.ToString();
+                string tmp = "";
+                for (int i = 0; i < Chords.currentChords.Count; i++)
+                {
+                    tmp += Chords.currentChords[i].ToString();
+                }
+                Debug.Log(tmp);
                 interval = 0f;
             }
         }
