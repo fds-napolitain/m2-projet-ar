@@ -144,7 +144,9 @@ public class Chords
         List<Note> result = new List<Note>();
         for (int i = 0; i < notes.Count; i++)
         {
-            result.Add(notes[i].Transpose(semitones));
+            Note item = notes[i].Transpose(semitones);
+            UnityEngine.Debug.Log(item.ToString());
+            result.Add(item);
         }
         return result;
     }

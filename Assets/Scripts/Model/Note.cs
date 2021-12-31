@@ -43,11 +43,6 @@ public class Note : IComparable<Note>
                tone == note.tone;
     }
 
-    public override int GetHashCode()
-    {
-        return (int)name * 100 + (int)tone;
-    }
-
     public override string ToString()
     {
 		string result = "";
@@ -127,8 +122,27 @@ public class Note : IComparable<Note>
     public Note Transpose(int semitones)
     {
         int st = Math.Abs(semitones) % 12;
-        int o = (int)Math.Truncate(Math.Abs(semitones) / 12.0);
-        return semitones > 0 ? new Note(name + st, tone + o) : new Note(name - st, tone - o);
+        int o = Math.Abs(semitones) / 12;
+        if (semitones < 0)
+        {
+            if (name - st < 0)
+            {
+                st = (int)(12 + (name - st));
+                UnityEngine.Debug.Log(new Note(name + st, tone).ToString() + " " + st);
+                return new Note(name + st, tone - o - 1);
+            }
+            return new Note(name - st, tone - o);
+        }
+        else
+        {
+            if (((int)name + st) / 12 >= 1)
+            {
+                st = (int)(name + st) % 12;
+                return new Note(name + st, tone + o + 1);
+
+            }
+            return new Note(name + st, tone + o);
+        }
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts
@@ -19,16 +20,10 @@ namespace Assets.Scripts
         void Update()
         {
             interval += Time.deltaTime;
-            if (interval >= INTERVAL_CHORDS)
+            if (interval >= INTERVAL_CHORDS && Chords.currentChords.Any())
             {
                 Chords chords = Chords.Recognize(Chords.currentChords);
                 overlay.text = chords.ToString();
-                string tmp = "";
-                for (int i = 0; i < Chords.currentChords.Count; i++)
-                {
-                    tmp += Chords.currentChords[i].ToString();
-                }
-                Debug.Log(tmp);
                 interval = 0f;
             }
         }

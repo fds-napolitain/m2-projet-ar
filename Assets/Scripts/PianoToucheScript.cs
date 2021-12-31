@@ -98,7 +98,7 @@ public class PianoToucheScript : MonoBehaviour
         {
             if (Game.song.currentEvents[i].notes.Contains(note))
             {
-                Debug.Log("Play: " + note.ToString());
+                //Debug.Log("Play: " + note.ToString());
                 playNote = Game.song.currentEvents[i].attack;
             }
         }
@@ -126,11 +126,11 @@ public class PianoToucheScript : MonoBehaviour
             }
             if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
             {
-                //Debug.Log("Note détectée: " + Game.currentTime);
+                //Debug.Log("Note " + note.ToString() + " détectée: " + Game.CurrentTime);
                 playNote = Game.CurrentTimeQuantized;
                 if (playNote == Game.CurrentTime)
                 {
-                    audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity)) / VELOCITY_MAX);
+                    audioSource.volume = Mathf.Max(VOLUME_MIN, VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity) / VELOCITY_MAX);
                     PlayNote();
                 }
                 Chords.currentChords.Add(note);
@@ -143,7 +143,7 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void OnTriggerExit()
     {
-        //Debug.Log("Note release: " + Game.currentTime);
+        //Debug.Log("Note " + note.ToString() + " release: " + Game.CurrentTime);
         float release = Game.CurrentTimeQuantized;
         //transform.SetPositionAndRotation(basePos, baseRot);
         Chords.currentChords.Remove(note);
