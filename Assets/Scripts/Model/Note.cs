@@ -130,7 +130,7 @@ public class Note : IComparable<Note>
                 st = (int)(12 - (st - name));
                 o++;
                 UnityEngine.Debug.Log(this.ToString() + " " + new Note((NoteName)st, tone - o).ToString() + " " + semitones + " " + st +  " " + o);
-                return new Note(name + st, tone - o);
+                return new Note((NoteName)st, tone - o);
             }
             UnityEngine.Debug.Log(this.ToString() + " " + new Note(name - st, tone - o).ToString() + " " + semitones + " " + st + " " + o);
             return new Note(name - st, tone - o);

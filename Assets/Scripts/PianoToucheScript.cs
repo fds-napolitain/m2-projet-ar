@@ -21,6 +21,7 @@ public class PianoToucheScript : MonoBehaviour
     private const float VELOCITY_MAX = 0.5f;
     private const float VOLUME_MIN = 0.25f;
     private const float VOLUME_MAX = 1f;
+    private KeyPressIndicator FEEDBACK_KEY = KeyPressIndicator.ROTATION;
     public const int KEYS_NUMBER = 88;
     
     // release
@@ -134,7 +135,7 @@ public class PianoToucheScript : MonoBehaviour
                     PlayNote();
                 }
                 Chords.currentChords.Add(note);
-                ShowClickedNote(true, KeyPressIndicator.COLOR);
+                ShowClickedNote(true);
             }
         }
     }
@@ -146,7 +147,7 @@ public class PianoToucheScript : MonoBehaviour
     {
         //Debug.Log("Note " + note.ToString() + " release: " + Game.CurrentTime);
         float release = Game.CurrentTimeQuantized;
-        ShowClickedNote(false, KeyPressIndicator.COLOR);
+        ShowClickedNote(false);
         Chords.currentChords.Remove(note);
         m_renderer.material = materialEnabled;
     }
@@ -195,20 +196,20 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     /// <param name="value"></param>
     /// <param name="keyPressIndicator"></param>
-    private void ShowClickedNote(bool value, KeyPressIndicator keyPressIndicator = KeyPressIndicator.COLOR)
+    private void ShowClickedNote(bool value)
     {
-        switch (keyPressIndicator)
+        switch (FEEDBACK_KEY)
         {
             case KeyPressIndicator.NONE:
                 break;
             case KeyPressIndicator.ROTATION:
                 if (value)
                 {
-                    transform.SetPositionAndRotation(basePos, baseRot);
+                    transform.SetPositionAndRotation(rotatedPos, rotatedRot);
                 }
                 else
                 {
-                    transform.SetPositionAndRotation(rotatedPos, rotatedRot);
+                    transform.SetPositionAndRotation(basePos, baseRot);
                 }
                 break;
             case KeyPressIndicator.COLOR:
