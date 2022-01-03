@@ -127,10 +127,12 @@ public class Note : IComparable<Note>
         {
             if (name - st < 0)
             {
-                st = (int)(12 + (name - st));
-                UnityEngine.Debug.Log(new Note(name + st, tone).ToString() + " " + st);
-                return new Note(name + st, tone - o - 1);
+                st = (int)(12 - (st - name));
+                o++;
+                UnityEngine.Debug.Log(this.ToString() + " " + new Note((NoteName)st, tone - o).ToString() + " " + semitones + " " + st +  " " + o);
+                return new Note(name + st, tone - o);
             }
+            UnityEngine.Debug.Log(this.ToString() + " " + new Note(name - st, tone - o).ToString() + " " + semitones + " " + st + " " + o);
             return new Note(name - st, tone - o);
         }
         else
@@ -138,9 +140,11 @@ public class Note : IComparable<Note>
             if (((int)name + st) / 12 >= 1)
             {
                 st = (int)(name + st) % 12;
-                return new Note(name + st, tone + o + 1);
-
+                o++;
+                UnityEngine.Debug.Log(this.ToString() + " " + new Note(name + st, tone + o).ToString() + " " + semitones + " " + st + " " + o);
+                return new Note(name + st, tone + o);
             }
+            UnityEngine.Debug.Log(this.ToString() + " " + new Note(name + st, tone + o).ToString() + " " + semitones + " " + st + " " + o);
             return new Note(name + st, tone + o);
         }
     }

@@ -134,6 +134,7 @@ public class PianoToucheScript : MonoBehaviour
                     PlayNote();
                 }
                 Chords.currentChords.Add(note);
+                ShowClickedNote(true, KeyPressIndicator.COLOR);
             }
         }
     }
@@ -145,8 +146,9 @@ public class PianoToucheScript : MonoBehaviour
     {
         //Debug.Log("Note " + note.ToString() + " release: " + Game.CurrentTime);
         float release = Game.CurrentTimeQuantized;
-        //transform.SetPositionAndRotation(basePos, baseRot);
+        ShowClickedNote(false, KeyPressIndicator.COLOR);
         Chords.currentChords.Remove(note);
+        m_renderer.material = materialEnabled;
     }
 
     /// <summary>
@@ -158,7 +160,6 @@ public class PianoToucheScript : MonoBehaviour
         {
             //Debug.Log("Note début: " + Game.currentTime);
             audioSource.Play();
-            //transform.SetPositionAndRotation(rotatedPos, rotatedRot);
             playNote = -1f;
         }
     }
@@ -176,6 +177,43 @@ public class PianoToucheScript : MonoBehaviour
         else
         {
             m_renderer.material = materialDisabled;
+        }
+    }
+
+    /// <summary>
+    /// Enumerations des types de feedbacks quand on appuie sur une touche.
+    /// </summary>
+    private enum KeyPressIndicator
+    {
+        NONE,
+        ROTATION,
+        COLOR,
+    }
+
+    /// <summary>
+    /// Permet d'avoir un retour sur les clicks de touches (rotation ou couleur ou rien)
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="keyPressIndicator"></param>
+    private void ShowClickedNote(bool value, KeyPressIndicator keyPressIndicator = KeyPressIndicator.COLOR)
+    {
+        switch (keyPressIndicator)
+        {
+            case KeyPressIndicator.NONE:
+                break;
+            case KeyPressIndicator.ROTATION:
+                if (value)
+                {
+                    transform.SetPositionAndRotation(basePos, baseRot);
+                }
+                else
+                {
+                    transform.SetPositionAndRotation(rotatedPos, rotatedRot);
+                }
+                break;
+            case KeyPressIndicator.COLOR:
+                m_renderer.material = value ? materialDisabled : materialEnabled;
+                break;
         }
     }
 }
