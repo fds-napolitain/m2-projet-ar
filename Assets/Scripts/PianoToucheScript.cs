@@ -29,6 +29,10 @@ public class PianoToucheScript : MonoBehaviour
     
     // play audio
     private float playNote = -1f; // -1 = false, float:x = play at x
+    private Vector3 basePos;
+    private Quaternion baseRot;
+    private Vector3 rotatedPos;
+    private Quaternion rotatedRot;
     private AudioSource audioSource;
 
     // note
@@ -45,12 +49,18 @@ public class PianoToucheScript : MonoBehaviour
     /// <summary>
     /// Appelé au début du script.
     /// </summary>
-    void Start()
+    void Start() 
     {
         audioSource = GetComponent<AudioSource>(); // recupere l'audiosource dans une variable
         m_renderer = GetComponent<Renderer>(); // renderer used for changing material of keys
         materialEnabled = m_renderer.material; // black or white key
         materialDisabled = Resources.Load<Material>("Materials/Piano/Gray_DISABLED"); // gray_disabled key
+        basePos = this.transform.position;
+        baseRot = this.transform.rotation;
+        transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
+        rotatedPos = this.transform.position;
+        rotatedRot = this.transform.rotation;
+        transform.SetPositionAndRotation(basePos, baseRot);
     }
 
     /// <summary>
@@ -88,7 +98,7 @@ public class PianoToucheScript : MonoBehaviour
         {
             if (Game.song.currentEvents[i].notes.Contains(note))
             {
-                Debug.Log("Play: " + note.ToString());
+                //Debug.Log("Play: " + note.ToString());
                 playNote = Game.song.currentEvents[i].attack;
             }
         }
@@ -116,14 +126,15 @@ public class PianoToucheScript : MonoBehaviour
             }
             if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
             {
-                //Debug.Log("Note détectée: " + Game.currentTime);
+                //Debug.Log("Note " + note.ToString() + " détectée: " + Game.CurrentTime);
                 playNote = Game.CurrentTimeQuantized;
                 if (playNote == Game.CurrentTime)
                 {
-                    audioSource.volume = Mathf.Max(VOLUME_MIN, (VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity)) / VELOCITY_MAX);
+                    audioSource.volume = Mathf.Max(VOLUME_MIN, VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity) / VELOCITY_MAX);
                     PlayNote();
                 }
                 Chords.currentChords.Add(note);
+                ShowClickedNote(true, KeyPressIndicator.COLOR);
             }
         }
     }
@@ -133,10 +144,11 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void OnTriggerExit()
     {
-        //Debug.Log("Note release: " + Game.currentTime);
+        //Debug.Log("Note " + note.ToString() + " release: " + Game.CurrentTime);
         float release = Game.CurrentTimeQuantized;
-        //transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
+        ShowClickedNote(false, KeyPressIndicator.COLOR);
         Chords.currentChords.Remove(note);
+        m_renderer.material = materialEnabled;
     }
 
     /// <summary>
@@ -146,9 +158,8 @@ public class PianoToucheScript : MonoBehaviour
     {
         if (playNote != -1f) // joue la note, rotate la touche
         {
-            //Debug.Log("Note d?but: " + Game.currentTime);
+            //Debug.Log("Note début: " + Game.currentTime);
             audioSource.Play();
-            //transform.Rotate(new Vector3(1f, 0f, 0f) * 2);
             playNote = -1f;
         }
     }
@@ -166,6 +177,43 @@ public class PianoToucheScript : MonoBehaviour
         else
         {
             m_renderer.material = materialDisabled;
+        }
+    }
+
+    /// <summary>
+    /// Enumerations des types de feedbacks quand on appuie sur une touche.
+    /// </summary>
+    private enum KeyPressIndicator
+    {
+        NONE,
+        ROTATION,
+        COLOR,
+    }
+
+    /// <summary>
+    /// Permet d'avoir un retour sur les clicks de touches (rotation ou couleur ou rien)
+    /// </summary>
+    /// <param name="value"></param>
+    /// <param name="keyPressIndicator"></param>
+    private void ShowClickedNote(bool value, KeyPressIndicator keyPressIndicator = KeyPressIndicator.COLOR)
+    {
+        switch (keyPressIndicator)
+        {
+            case KeyPressIndicator.NONE:
+                break;
+            case KeyPressIndicator.ROTATION:
+                if (value)
+                {
+                    transform.SetPositionAndRotation(basePos, baseRot);
+                }
+                else
+                {
+                    transform.SetPositionAndRotation(rotatedPos, rotatedRot);
+                }
+                break;
+            case KeyPressIndicator.COLOR:
+                m_renderer.material = value ? materialDisabled : materialEnabled;
+                break;
         }
     }
 }

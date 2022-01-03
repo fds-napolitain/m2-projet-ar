@@ -4,7 +4,7 @@ using System.Collections.Generic;
 /// Enumerations et règles accords
 /// https://www.scales-chords.com/chord-namer/piano?notes=C;D;G&key=&bass=C
 /// </summary>
-public enum ChordsType
+public enum ChordsName
 {
     CMAJOR, // major third
     CMAJOR7, // 7th
@@ -34,18 +34,18 @@ public class Chords
         new bool[] { true, false, false, true, false, false, false, true, false, false, false, false }, // C minor
         new bool[] { true, false, false, true, false, false, false, true, false, false, true, false }, // C minor 7
         new bool[] { true, false, false, true, false, false, true, false, false, false, false, false }, // C dim
-        new bool[] { true, false, false, false, false, false, false, true, false, false, false, false, false }, // Csus
-        new bool[] { true, false, true, false, false, false, false, true, false, false, false, false, false }, // Csus2
-        new bool[] { true, false, false, false, false, true, false, true, false, false, false, false, false }, // Csus4
+        new bool[] { true, false, false, false, false, false, false, true, false, false, false, false }, // Csus
+        new bool[] { true, false, true, false, false, false, false, true, false, false, false, false }, // Csus2
+        new bool[] { true, false, false, false, false, true, false, true, false, false, false, false }, // Csus4
     };
     private const int TYPES_NUMBER = 11; // a incrémenter si on change TYPES
     public static List<Note> currentChords = new List<Note>();
 
     // ATTRIBUTES
     public NoteName name;
-    public ChordsType chords;
+    public ChordsName chords;
 
-    public Chords(NoteName name, ChordsType chords)
+    public Chords(NoteName name, ChordsName chords)
     {
         this.name = name;
         this.chords = chords;
@@ -95,43 +95,43 @@ public class Chords
         }
         switch (chords)
         {
-            case ChordsType.CMAJOR:
+            case ChordsName.CMAJOR:
                 result += " major";
                 break;
-            case ChordsType.CMAJOR7:
+            case ChordsName.CMAJOR7:
                 result += " major 7";
                 break;
-            case ChordsType.CMAJOR9:
+            case ChordsName.CMAJOR9:
                 result += " major 9";
                 break;
-            case ChordsType.CMAJOR11:
+            case ChordsName.CMAJOR11:
                 result += " major 11";
                 break;
-            case ChordsType.CAUG:
+            case ChordsName.CAUG:
                 result += " augmented";
                 break;
-            case ChordsType.CMINOR:
+            case ChordsName.CMINOR:
                 result += " minor";
                 break;
-            case ChordsType.CMINOR7:
+            case ChordsName.CMINOR7:
                 result += " minor 7";
                 break;
-            case ChordsType.CDIM:
+            case ChordsName.CDIM:
                 result += " diminued";
                 break;
-            case ChordsType.CSUS:
+            case ChordsName.CSUS:
                 result += " suspended";
                 break;
-            case ChordsType.CSUS2:
+            case ChordsName.CSUS2:
                 result += " suspended + 2";
                 break;
-            case ChordsType.CSUS4:
+            case ChordsName.CSUS4:
                 result += " suspended + 4";
                 break;
-            case ChordsType.NONE:
-                break;
+            case ChordsName.NONE:
+                return "";
         }
-        return result.Length > 1 ? result : "";
+        return result;
     }
 
     /// <summary>
@@ -150,16 +150,6 @@ public class Chords
     }
 
     /// <summary>
-    /// Need a sorted List<Note>
-    /// Transpose to a C chord.
-    /// </summary>
-    /// <returns></returns>
-    private static int TransposeToBase(List<Note> notes)
-    {
-        return (int)notes[0].name;
-    }
-
-    /// <summary>
     /// Reconnait les accords à partir d'une listes de notes jouées.
     /// </summary>
     /// <param name="notes"></param>
@@ -173,8 +163,7 @@ public class Chords
             notes.Sort();
         }
         // transposer la base note
-        int s = TransposeToBase(notes);
-        List<Note> transposed = Transpose(notes, -s);
+        List<Note> transposed = Transpose(notes, -(int)notes[0].name);
         // creation d'un tableau boolean pour comparer avec le dictionnaire
         for (int i = 0; i < notes.Count; i++)
         {
@@ -194,9 +183,9 @@ public class Chords
             }
             if (flag == true) // si l'accord était le bon retourner l'énum correspondante
             {
-                return new Chords(notes[0].name, (ChordsType)i);
+                return new Chords(notes[0].name, (ChordsName)i);
             }
         }
-        return new Chords(notes[0].name, ChordsType.NONE); // cas par défaut (NONE)
+        return new Chords(NoteName.C, ChordsName.NONE); // cas par défaut (NONE)
     }
 }

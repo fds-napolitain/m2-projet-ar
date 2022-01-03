@@ -122,8 +122,31 @@ public class Note : IComparable<Note>
     public Note Transpose(int semitones)
     {
         int st = Math.Abs(semitones) % 12;
-        int o = (int)Math.Truncate(Math.Abs(semitones) / 12.0);
-        return semitones > 0 ? new Note(name + st, tone + o) : new Note(name - st, tone - o);
+        int o = Math.Abs(semitones) / 12;
+        if (semitones < 0)
+        {
+            if (name - st < 0)
+            {
+                st = (int)(12 - (st - name));
+                o++;
+                UnityEngine.Debug.Log(this.ToString() + " " + new Note((NoteName)st, tone - o).ToString() + " " + semitones + " " + st +  " " + o);
+                return new Note(name + st, tone - o);
+            }
+            UnityEngine.Debug.Log(this.ToString() + " " + new Note(name - st, tone - o).ToString() + " " + semitones + " " + st + " " + o);
+            return new Note(name - st, tone - o);
+        }
+        else
+        {
+            if (((int)name + st) / 12 >= 1)
+            {
+                st = (int)(name + st) % 12;
+                o++;
+                UnityEngine.Debug.Log(this.ToString() + " " + new Note(name + st, tone + o).ToString() + " " + semitones + " " + st + " " + o);
+                return new Note(name + st, tone + o);
+            }
+            UnityEngine.Debug.Log(this.ToString() + " " + new Note(name + st, tone + o).ToString() + " " + semitones + " " + st + " " + o);
+            return new Note(name + st, tone + o);
+        }
     }
 }
 

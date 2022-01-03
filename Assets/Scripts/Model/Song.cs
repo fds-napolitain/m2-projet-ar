@@ -77,7 +77,7 @@ public class Song
         events.AddEvent(new Event(C, Quantization.EIGHT));
         events.AddEvent(new Event(Calt, Quantization.EIGHT));
         events.AddEvent(new Event(Cmaj7, Quantization.EIGHT));
-        events.AddEvent(new Event(Calt, Quantization.EIGHT));
-        */
+        events.AddEvent(new Event(Calt, Quantization.EIGHT));*/
+        
     }
 }
