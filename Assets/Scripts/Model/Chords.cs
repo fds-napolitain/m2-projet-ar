@@ -45,6 +45,11 @@ public class Chords
     public NoteName name;
     public ChordsName chords;
 
+    /// <summary>
+    /// Crée un accord : nom d'accord + base
+    /// </summary>
+    /// <param name="name"></param>
+    /// <param name="chords"></param>
     public Chords(NoteName name, ChordsName chords)
     {
         this.name = name;
@@ -153,6 +158,7 @@ public class Chords
     /// Reconnait les accords à partir d'une listes de notes jouées.
     /// </summary>
     /// <param name="notes"></param>
+    /// <param name="sorted"></param>
     /// <returns></returns>
     public static Chords Recognize(List<Note> notes, bool sorted = false)
     {
@@ -174,7 +180,7 @@ public class Chords
         for (int i = 0; i < TYPES_NUMBER; i++) // iterer la liste des accords
         {
             bool flag = true;
-            for (int j = 0; j < 12; j++)
+            for (int j = 0; j < Scale.SEMITONES_NUMBER; j++)
             {
                 if (t[j] != TYPES[i][j]) // si l'accord n'est pas bon flag = false
                 {

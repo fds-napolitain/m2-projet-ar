@@ -21,9 +21,9 @@ public class PianoToucheScript : MonoBehaviour
     private const float VELOCITY_MAX = 0.5f;
     private const float VOLUME_MIN = 0.25f;
     private const float VOLUME_MAX = 1f;
-    private KeyPressIndicator FEEDBACK_KEY = KeyPressIndicator.ROTATION;
     public const int KEYS_NUMBER = 88;
-    
+    private KeyPressIndicator FEEDBACK_KEY = KeyPressIndicator.COLOR;
+
     // release
     private float release_tmp = 0;
     private float release = Mathf.Infinity; // infinite = false, float:x = play at x
@@ -143,7 +143,7 @@ public class PianoToucheScript : MonoBehaviour
     /// <summary>
     /// Quand on arrête de toucher une note avec le doigt.
     /// </summary>
-    void OnTriggerExit()
+    void OnTriggerExit(Collider collider)
     {
         //Debug.Log("Note " + note.ToString() + " release: " + Game.CurrentTime);
         float release = Game.CurrentTimeQuantized;
