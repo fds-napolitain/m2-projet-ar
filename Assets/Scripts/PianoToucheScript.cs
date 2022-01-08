@@ -70,13 +70,13 @@ public class PianoToucheScript : MonoBehaviour
     void Update()
     {
         // quantification de notes
-        if (Game.CurrentTime >= playNote)
+        if (Game.currentTime >= playNote)
         {
             //Debug.Log(playNote + " " + Game.currentTime);
             PlayNote();
         }
         // release de la touche jusqu'a fin de note (release_time)
-        if (Game.CurrentTime >= release)
+        if (Game.currentTime >= release)
         {
             release_tmp += Time.deltaTime;
             audioSource.volume -= Time.deltaTime / RELEASE_TIME;
@@ -125,15 +125,12 @@ public class PianoToucheScript : MonoBehaviour
                     a += 5;
                 }
             }
-            if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
+            //if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
             {
                 //Debug.Log("Note " + note.ToString() + " détectée: " + Game.CurrentTime);
+                Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                audioSource.volume = Mathf.Max(VOLUME_MIN, VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity) / VELOCITY_MAX);
                 playNote = Game.CurrentTimeQuantized;
-                if (playNote == Game.CurrentTime)
-                {
-                    audioSource.volume = Mathf.Max(VOLUME_MIN, VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity) / VELOCITY_MAX);
-                    PlayNote();
-                }
                 Chords.currentChords.Add(note);
                 ShowClickedNote(true);
             }
@@ -145,11 +142,14 @@ public class PianoToucheScript : MonoBehaviour
     /// </summary>
     void OnTriggerExit(Collider collider)
     {
-        //Debug.Log("Note " + note.ToString() + " release: " + Game.CurrentTime);
-        float release = Game.CurrentTimeQuantized;
-        ShowClickedNote(false);
-        Chords.currentChords.Remove(note);
-        m_renderer.material = materialEnabled;
+        if (noteEnabled)
+        {
+            //Debug.Log("Note " + note.ToString() + " release: " + Game.CurrentTime);
+            float release = Game.CurrentTimeQuantized;
+            ShowClickedNote(false);
+            Chords.currentChords.Remove(note);
+            m_renderer.material = materialEnabled;
+        }
     }
 
     /// <summary>
@@ -174,10 +174,12 @@ public class PianoToucheScript : MonoBehaviour
         if (Game.scale.types[(int)note.name]) // check if note is in scale
         {
             m_renderer.material = materialEnabled;
+            noteEnabled = true;
         }
         else
         {
             m_renderer.material = materialDisabled;
+            noteEnabled = false;
         }
     }
 
