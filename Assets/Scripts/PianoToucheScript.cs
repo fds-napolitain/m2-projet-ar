@@ -43,6 +43,7 @@ public class PianoToucheScript : MonoBehaviour
     private Renderer m_renderer;
     private Material materialEnabled;
     private Material materialDisabled;
+    private Material materialGreen;
 
 
     // ==================== METHODS ======================
@@ -56,6 +57,7 @@ public class PianoToucheScript : MonoBehaviour
         m_renderer = GetComponent<Renderer>(); // renderer used for changing material of keys
         materialEnabled = m_renderer.material; // black or white key
         materialDisabled = Resources.Load<Material>("Materials/Piano/Gray_DISABLED"); // gray_disabled key
+        materialGreen = Resources.Load<Material>("Materials/Piano/Green");
         basePos = this.transform.position;
         baseRot = this.transform.rotation;
         transform.Rotate(new Vector3(1f, 0f, 0f) * -2);
@@ -215,7 +217,7 @@ public class PianoToucheScript : MonoBehaviour
                 }
                 break;
             case KeyPressIndicator.COLOR:
-                m_renderer.material = value ? materialDisabled : materialEnabled;
+                m_renderer.material = value ? materialGreen : materialEnabled;
                 break;
         }
     }
