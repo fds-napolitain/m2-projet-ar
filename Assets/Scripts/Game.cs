@@ -10,7 +10,7 @@ public class Game : MonoBehaviour
 {
     // audio
     public static float QUANTIZATION = Quantization.NONE;
-    public static int TEMPO = 76;
+    public static float TEMPO = 76.0f;
     public static float currentTime = 0f; // temps absolu (tempo = 60)
     public static float CurrentTime { get => currentTime / (TEMPO / 60.0f); } // temps relatif (tempo pris en compte)
     public static float DeltaTime { get => Time.deltaTime / (TEMPO / 60.0f); } // delta time relatif au tempo
@@ -71,8 +71,16 @@ public class Game : MonoBehaviour
             }
             else
             {
-                return (Mathf.Round(currentTime / QUANTIZATION) * QUANTIZATION + QUANTIZATION / 2) / (TEMPO / 60.0f);
+                return (Mathf.Round(currentTime / NormalizedQuantization) * NormalizedQuantization + NormalizedQuantization / 2);
             }
         }
+    }
+
+    /// <summary>
+    /// Normalise la quantification au tempo.
+    /// </summary>
+    public static float NormalizedQuantization
+    {
+        get => QUANTIZATION / TEMPO * 60.0f;
     }
 }

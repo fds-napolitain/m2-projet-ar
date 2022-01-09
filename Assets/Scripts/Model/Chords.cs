@@ -174,7 +174,7 @@ public class Chords
         for (int i = 0; i < notes.Count; i++)
         {
             t[(int)transposed[i].name] = true;
-            UnityEngine.Debug.Log(transposed[i].ToString() + " " + t[(int)transposed[i].name]);
+            //UnityEngine.Debug.Log(transposed[i].ToString() + " " + t[(int)transposed[i].name]);
         }
         // comparer
         for (int i = 0; i < TYPES_NUMBER; i++) // iterer la liste des accords

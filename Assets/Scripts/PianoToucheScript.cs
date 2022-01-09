@@ -72,13 +72,13 @@ public class PianoToucheScript : MonoBehaviour
     void Update()
     {
         // quantification de notes
-        if (Game.CurrentTime >= playNote)
+        if (playNote != -1f && Game.currentTime >= playNote)
         {
-            //Debug.Log(playNote + " " + Game.currentTime);
+            Debug.Log(playNote + " " + Game.currentTime);
             PlayNote();
         }
         // release de la touche jusqu'a fin de note (release_time)
-        if (Game.CurrentTime >= release)
+        if (release != Mathf.Infinity && Game.currentTime >= release)
         {
             release_tmp += Time.deltaTime;
             audioSource.volume -= Time.deltaTime / RELEASE_TIME;
@@ -102,7 +102,7 @@ public class PianoToucheScript : MonoBehaviour
             if (Game.song.currentEvents[i].notes.Contains(note))
             {
                 //Debug.Log("Play: " + note.ToString());
-                playNote = Game.song.currentEvents[i].attack;
+                //playNote = Game.song.currentEvents[i].attack;
             }
         }
     }
@@ -130,7 +130,7 @@ public class PianoToucheScript : MonoBehaviour
             //if (Game.frame.Hands[a / 5].Fingers[a % 5].IsExtended) // joue le son
             //{
                 //Debug.Log("Note " + note.ToString() + " détectée: " + Game.CurrentTime);
-                Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+                //Debug.Log(">>>>>>>>>>>>>>>>>>>>>>>>>>>>");
                 audioSource.volume = Mathf.Max(VOLUME_MIN, VOLUME_MAX * Mathf.Min(VELOCITY_MAX, collider.GetComponent<VelocityFinger>().velocity) / VELOCITY_MAX);
                 playNote = Game.CurrentTimeQuantized;
                 Chords.currentChords.Add(note);

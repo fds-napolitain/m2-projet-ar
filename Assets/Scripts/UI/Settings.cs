@@ -15,7 +15,7 @@ namespace Assets.Scripts.UI
         {
             if (settingsTempo.text.Length != 0)
             {
-                Game.TEMPO = int.Parse(settingsTempo.text);
+                Game.TEMPO = float.Parse(settingsTempo.text);
                 settingsTempo.placeholder.GetComponent<Text>().text = "Tempo: " + settingsTempo.text;
                 settingsTempo.text = "";
                 Debug.Log(Game.TEMPO);
