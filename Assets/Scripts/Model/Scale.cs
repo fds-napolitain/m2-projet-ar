@@ -63,12 +63,12 @@ public class Scale
 				types[(3 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(4 + (int)note) % SEMITONES_NUMBER] = false;
 				types[(5 + (int)note) % SEMITONES_NUMBER] = true;
-				types[(6 + (int)note) % SEMITONES_NUMBER] = true;
-				types[(7 + (int)note) % SEMITONES_NUMBER] = false;
+				types[(6 + (int)note) % SEMITONES_NUMBER] = false;
+				types[(7 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(8 + (int)note) % SEMITONES_NUMBER] = true;
 				types[(9 + (int)note) % SEMITONES_NUMBER] = false;
-				types[(10 + (int)note) % SEMITONES_NUMBER] = false;
-				types[(11 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(10 + (int)note) % SEMITONES_NUMBER] = true;
+				types[(11 + (int)note) % SEMITONES_NUMBER] = false;
 				break;
 		}
 		PianoToucheScript.updateScale = 88;
