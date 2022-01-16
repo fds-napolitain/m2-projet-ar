@@ -1,0 +1,122 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[french]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with`a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Piano, musique et XR}
+\author{Maxime Boucher, Edgar Jacquemoud, Yann Marin}
+
+\begin{document}
+\maketitle
+
+\section{Comment apprendre le piano en autodidacte ?}
+
+Il peut être difficile d'apprendre le piano en autodidacte, pour de multiples raisons. Cela peut être dû à la motivation (pourquoi continuer), à un manque de savoir (sans oreille musicale, il est difficile de savoir si un accord est vraiment correct, et dans quel cadre il est utilisable), ou même à un manque de moyens (que ce soit en espace, ou en argent pour un piano).
+\newline
+\newline
+La solution que nous avons choisie est de créer un piano avec LeapMotion Controller, afin de répondre à ces problématiques. Vous pouvez accéder au code source ici : \href{https://github.com/fds-napolitain/m2-projet-ar}{https://github.com/fds-napolitain/m2-projet-ar}
+
+\section{LeapMotion, un pont avec le réel}
+
+Pour commencer, nous avons utilisé donc Unity et le SDK Unity de LeapMotion. Cela nous a offert des outils divers de sélection comme le pincement des doigts. Cependant, l'utilité étant assez limitée nous avons décidé de faire table rase de ces fonctionnalités et nous avons donc re fait de presque zero.
+\newline
+\newline
+En plaçant des boxcolliders au bout des doigts, nous avons gagné un système de collisions simples mais facilement étendable. Nous avons donc également introduit le concept de vélocité.
+\newline
+\newline
+Ce dernier calcule la vitesse de mouvement des doigts en se basant sur la position $y$ du collider. Cette vitesse se calcule sur un intervalle de temps que l'on peut définir (s'il est trop faible, un mouvement quasi nul peut être perçu comme rapide, donc nous avons trouvé un compromis vers 0.05s). 
+\newline
+\newline
+Pour rappel, la vélocité présente dans les DAW (digital audio workstation) décrit le volume du son. La vitesse de mouvement du doigt a donc une influence direct sur le volume de la touche appuyée. Notre formule, avec $v$ pour volume et $c$ pour vélocité sera :
+\begin{equation}
+    v = maximum(v_{max}, \frac{v_{max} * minimum(c_{max}, c)}{c_{max}})
+\end{equation}
+
+\section{De C0 à C7… l’étendue d’un vrai piano à portée de mains}
+
+Nous avons également travaillé sur le mouvement de la caméra sur le piano. Nous avons besoin de contrôler
+\begin{itemize}
+    \item le zoom de la caméra
+    \item la position x de la caméra
+\end{itemize}
+
+Pour cela, nous calculons l'écart des deux mains comme variable influant sur le zoom, et la position $x$ du centre des deux mains pour définir la position $x$ de la caméra. Voici dans la vidéo ci-dessous un exemple en action. Notre formule sera :
+\begin{equation}
+    center_x = \frac{pos_{gauche_x}+pos_{droite_x}}{2}
+\end{equation}
+\begin{equation}
+        zoom_y = pos_{camera_y} + \sqrt{pos_{gauche_x}^2 - pos_{droite_x}^2}
+\end{equation}
+\begin{equation}
+    pos_{camera} = (center_x, \frac{zoom_y-2}{screen_{width}*pos_{camera_{ymax}}}, pos_{camera_z}) 
+\end{equation}
+-2 est une constante que nous utilisons dans une condition pour éviter des micro tremblements (nous n'autorisons pas des mouvements trop faibles pour éviter une sensation désagréable.  
+
+Vous pouvez voir un exemple à l'oeuvre ici : \href{https://www.youtube.com/watch?v=EnPYldUcp3Q&list=PLvsOC5PoBqO5ggNxiqPKSkO_ZL5-JctbU}{vidéo mouvement}
+
+\section{La quantification à notre service}
+
+Que se passe-t-il quand nous jouons ? Peut-on jouer parfaitement juste ? La réponse est non, il y aura toujours une inexactitude liée à l'erreur humaine. Si l'on veut jouer à un temps $t = 1s$, il y a des chances que nous jouons par exemple à $t = 0.98s$ ou $t = 1.02s$.
+\newline
+\newline
+Pour non pas réduire le problème mais le supprimer, nous proposons d'introduire la quantification. C'est à dire que le joueur choisit un intervalle de précision (comme la double croche si on s'en réfère à la quantification musicale). Nous aurons donc temps $t$ et quantification $q$ comme variable.
+
+Une formule de correction devra donc arrondir nos temps à la valeur quantifié la plus proche.
+\begin{equation}
+    t' = arrondir(\frac{t}{q}) * q
+\end{equation}
+Cette première formule permet d'arrondir effectivement correctement. Si $x = 1.02$ et $q = 0.5$, alors notre temps $t' = 1.00$.
+\newline
+\newline
+Mais il y a une erreur de conception ! On ne peut corriger un temps qui devrait être jouer avant le temps t. Autrement dit, $t' >= t$ est une condition pour que la correction fonctionne dans notre monde. Nous allons donc devoir ajouter une latence égale à $q/2$ pour pouvoir corriger tout $t \in [t'-q, t'+q]$. Nous obtenons cette formule :
+\newline
+\newline
+\begin{equation}
+    t' = arrondir(\frac{t}{q}) * q + \frac{q}{2}
+\end{equation}
+\newline
+\newline
+Enfin, pour tenir compte du tempo, il nous faut normaliser la quantification. Cette normalisation sera représentée sous la forme de $nq = q / tempo * 60$.
+Ainsi, notre formule finale deviendra :
+\begin{equation}
+    t' = arrondir(\frac{t}{nq}) * nq + \frac{nq}{2}
+\end{equation}
+\newline
+\newline
+Vous pouvez voir un exemple à l'oeuvre ici : \href{https://www.youtube.com/watch?v=u1Y226gDEoo&list=PLvsOC5PoBqO5ggNxiqPKSkO_ZL5-JctbU&index=2}{vidéo quantification}
+
+\section{Des gammes visuelles pour mieux mémoriser}
+
+Pour faciliter l'apprentissage des différentes gammes musicales, et pour aider à trouver des mélodies cohérentes, nous proposons au joueur de choisir une gamme, qui sera un cadre musical de travail. Toutes les touches n'appartenant pas à la gamme voulue sont alors désactivées (ne produisent plus de son) et apparaissent comme grisées.
+\newline
+\newline
+À noter que une gamme de ré majeur sera correctement ajusté par rapport au décalage en valeur de demi-tons.
+\newline
+\newline
+Vous pouvez voir un exemple à l'oeuvre ici : \href{https://www.youtube.com/watch?v=C232B-3eK2Y&list=PLvsOC5PoBqO5ggNxiqPKSkO_ZL5-JctbU&index=4}{vidéo gamme}
+
+\section{Un retour instantané sur vos efforts : ChordsFinder}
+
+L'étape d'après pour un bon guide, est de vous informer en temps réel si vous venez de jouer un accord, et de vous indiquer lequel plus précisément. Comme, en musique, tout est cyclique (un Do + 12 demi tons est un do), nous avons abordé ce problème par un dictionnaire d'accords et une méthode de transposition théorique. 
+\newline
+\newline
+D'abord, nous commençons par un dictionnaire. Ce dernier comportera une liste de 12 demi tons. Par exemple :
+\begin{verbatim}
+            new bool[] { true, false, false, false, 
+            true, false, false, true, false, false, false, true }, // C major 7
+\end{verbatim}
+Chaque demi ton représente une note (do, ré mineur, ré, etc...). Nous basons tout sur le do et appliquons des transpositions de $n$ demi-tons tel que $n$ est le nombre de demi tons nécessaire pour que la note jouée la plus basse devienne un do. Nous appliquons alors une soustraction de demi-tons à chaque note jouée de $n$ valeurs, et nous obtenons une liste de notes qui, si est un accord, sera probablement indexé par notre dictionnaire. Si c'est le cas, alors le nom de l'accord trouvé est affiché sur l'écran.
+\newline
+\newline
+Vous pouvez voir un exemple à l'oeuvre ici : \href{https://www.youtube.com/watch?v=-Vk3yYAOV_4&list=PLvsOC5PoBqO5ggNxiqPKSkO_ZL5-JctbU&index=3}{vidéo accords}
+\end{document}
