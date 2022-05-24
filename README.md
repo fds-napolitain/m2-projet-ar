@@ -73,7 +73,7 @@ musical). We will therefore have time $t$ and quantification $q$ as
 variable.
 
 A correction formula will therefore have to round our times to the value
-closest quantified. $$t' = round(\frac{t}{q}) * q$$ This
+closest quantified. $t' = round(\frac{t}{q}) * q$ This
 first formula actually rounds correctly. Yes
 $x = $1.02 and $q = $0.5, so our time $t' = $1.00. But there is one
 design error! One cannot correct a time which should be
