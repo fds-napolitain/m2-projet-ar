@@ -50,10 +50,9 @@ piano. We need to control
 
 For this, we calculate the difference of the two hands as an influencing variable
 on the zoom, and the $x$ position of the center of the two hands to define the
-position $x$ of the camera. Here is an example in the video below.
-stock. Our formula will be:
-$$center_x = \frac{pos_{gauche_x}+pos_{droite_x}}{2}$$
-$$zoom_y = pos_{camera_y} + \sqrt{pos_{gauche_x}^2 - pos_{droite_x}^2}$$
+position $x$ of the camera. Here is an example in the video below. Our formula will be:
+$$center_x = \frac{pos_{left_x}+pos_{right_x}}{2}$$
+$$zoom_y = pos_{camera_y} + \sqrt{pos_{left_x}^2 - pos_{right_x}^2}$$
 $$pos_{camera} = (center_x, \frac{zoom_y-2}{screen_{width}*pos_{camera_{ymax}}}, pos_{camera_z})$$
 -2 is a constant that we use in a conditional to avoid
 micro tremors (we do not allow too much movement)
