@@ -64,8 +64,7 @@ mouvement](https://www.youtube.com/watch?v=EnPYldUcp3Q&list=PLvsOC5PoBqO5ggNxiqP
 ### Quantification at our service
 
 What happens when we play? Can we play perfectly in tune?
-The answer is no, there will always be an error-related inaccuracy
-human. If we want to play at a time $t = 1s$, chances are that
+The answer is no, there will always be an accuracy human-related error. If we want to play at a time $t = 1s$, chances are that
 we play for example at $t = 0.98s$ or $t = 1.02s$. For not
 reduce the problem but eliminate it, we propose to introduce the
 quantification. That is to say that the player chooses an interval of
